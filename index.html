@@ -23,250 +23,104 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans SC', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; line-height: 1.7; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(ellipse at 20% 50%, rgba(139,58,42,0.04) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(184,150,12,0.04) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+  .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
 
-  body {
-    font-family: 'Noto Sans SC', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-    line-height: 1.7;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(ellipse at 20% 50%, rgba(139,58,42,0.04) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(184,150,12,0.04) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-    position: relative;
-    z-index: 1;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 56px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 50%;
-    transform: translateX(-50%);
-    width: 60px; height: 2px;
-    background: var(--accent);
-  }
-
-  .logo-mark {
-    font-family: 'Noto Serif SC', serif;
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  h1 {
-    font-family: 'Noto Serif SC', serif;
-    font-size: clamp(26px, 4vw, 36px);
-    font-weight: 500;
-    line-height: 1.3;
-    margin-bottom: 12px;
-  }
-
+  header { text-align: center; margin-bottom: 56px; padding-bottom: 40px; border-bottom: 1px solid var(--border); position: relative; }
+  header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background: var(--accent); }
+  .logo-mark { font-family: 'Noto Serif SC', serif; font-size: 11px; letter-spacing: 0.4em; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; display: block; }
+  h1 { font-family: 'Noto Serif SC', serif; font-size: clamp(26px, 4vw, 36px); font-weight: 500; color: var(--ink); line-height: 1.3; margin-bottom: 12px; }
   .subtitle { color: var(--muted); font-size: 14px; font-weight: 300; }
 
-  /* API */
-  .api-section {
-    background: var(--paper-dark);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px 28px;
-    margin-bottom: 32px;
-  }
-
-  .api-section-label {
-    font-size: 11px; letter-spacing: 0.15em; color: var(--muted);
-    text-transform: uppercase; margin-bottom: 12px; font-weight: 500;
-  }
-
+  .api-section { background: var(--paper-dark); border: 1px solid var(--border); border-radius: 4px; padding: 24px 28px; margin-bottom: 32px; }
+  .api-section-label { font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; font-weight: 500; }
   .api-row { display: flex; gap: 10px; align-items: center; }
-
-  .api-input {
-    flex: 1;
-    font-family: 'DM Mono', monospace; font-size: 13px;
-    padding: 10px 14px;
-    background: var(--paper); border: 1px solid var(--border); border-radius: 3px;
-    color: var(--ink); outline: none; transition: border-color 0.2s;
-  }
+  .api-input { flex: 1; font-family: 'DM Mono', monospace; font-size: 13px; padding: 10px 14px; background: var(--paper); border: 1px solid var(--border); border-radius: 3px; color: var(--ink); outline: none; transition: border-color 0.2s; }
   .api-input:focus { border-color: var(--accent); }
   .api-input::placeholder { color: var(--muted); opacity: 0.6; }
-
-  .api-toggle {
-    font-size: 11px; padding: 10px 16px;
-    background: transparent; border: 1px solid var(--border); border-radius: 3px;
-    color: var(--muted); cursor: pointer; font-family: 'DM Mono', monospace;
-    transition: all 0.2s; white-space: nowrap;
-  }
+  .api-toggle { font-size: 11px; padding: 10px 16px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); cursor: pointer; font-family: 'DM Mono', monospace; transition: all 0.2s; white-space: nowrap; }
   .api-toggle:hover { border-color: var(--accent); color: var(--accent); }
   .api-hint { margin-top: 8px; font-size: 12px; color: var(--muted); font-weight: 300; }
 
-  /* Card */
-  .card {
-    background: #fff; border: 1px solid var(--border); border-radius: 4px;
-    padding: 32px; margin-bottom: 24px;
-    box-shadow: var(--shadow); transition: box-shadow 0.3s;
-  }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
   .card:hover { box-shadow: var(--shadow-hover); }
-
-  .card-header {
-    display: flex; align-items: baseline; gap: 12px;
-    margin-bottom: 28px; padding-bottom: 20px;
-    border-bottom: 1px solid var(--paper-dark);
-  }
-
+  .card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--paper-dark); }
   .card-number { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; font-weight: 500; }
-  .card-title { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; }
+  .card-title { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; color: var(--ink); }
   .card-desc { font-size: 13px; color: var(--muted); margin-top: 2px; font-weight: 300; }
 
-  /* Type selector */
-  .type-selector { display: flex; gap: 10px; }
-  .type-btn {
-    flex: 1; padding: 10px;
-    border: 1.5px solid var(--border); border-radius: 3px;
-    background: var(--paper); color: var(--muted);
-    font-size: 14px; font-family: 'Noto Sans SC', sans-serif;
-    cursor: pointer; transition: all 0.2s; text-align: center;
-  }
-  .type-btn:hover { border-color: var(--accent-light); color: var(--ink); }
-  .type-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 500; }
-
-  /* Upload panels */
   .upload-panel { display: none; }
   .upload-panel.active { display: block; }
-
-  .section-divider { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
-  .section-label {
-    font-size: 12px; letter-spacing: 0.12em; color: var(--muted);
-    text-transform: uppercase; margin-bottom: 14px; font-weight: 500;
-  }
-
-  /* Upload grid */
   .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 600px) { .upload-grid { grid-template-columns: 1fr; } }
 
-  /* Single file zone */
-  .upload-zone {
-    border: 1.5px dashed var(--border); border-radius: 4px;
-    padding: 24px 16px; text-align: center; cursor: pointer;
-    transition: all 0.25s; position: relative; background: var(--paper);
-  }
+  .upload-zone { border: 1.5px dashed var(--border); border-radius: 4px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: var(--paper); }
   .upload-zone:hover { border-color: var(--accent-light); background: #fdf8f4; }
   .upload-zone.has-file { border-color: var(--success); background: var(--success-bg); border-style: solid; }
   .upload-zone.dragover { border-color: var(--accent); background: #fdf0ec; transform: scale(1.01); }
   .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
-  .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; transition: transform 0.2s; }
-  .upload-zone:hover .upload-icon { transform: translateY(-2px); }
-  .upload-label { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; display: block; }
-  .upload-format { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .upload-filename { font-size: 12px; color: var(--success); margin-top: 6px; display: block; font-weight: 500; word-break: break-all; }
-
-  /* Multi file zone */
-  .upload-zone-multi {
-    border: 1.5px dashed var(--border); border-radius: 4px;
-    padding: 20px 16px; text-align: center; cursor: pointer;
-    transition: all 0.25s; position: relative; background: var(--paper);
-    margin-bottom: 16px;
-  }
+  .upload-zone-multi { border: 1.5px dashed var(--border); border-radius: 4px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: var(--paper); grid-column: 1 / -1; }
   .upload-zone-multi:hover { border-color: var(--accent-light); background: #fdf8f4; }
   .upload-zone-multi.has-file { border-color: var(--success); border-style: solid; }
   .upload-zone-multi.dragover { border-color: var(--accent); background: #fdf0ec; }
   .upload-zone-multi input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
-  .multi-file-list { margin-top: 12px; text-align: left; max-height: 140px; overflow-y: auto; }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; transition: transform 0.2s; }
+  .upload-zone:hover .upload-icon, .upload-zone-multi:hover .upload-icon { transform: translateY(-2px); }
+  .upload-label { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; display: block; }
+  .upload-format { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
+  .upload-filename { font-size: 12px; color: var(--success); margin-top: 6px; display: block; font-weight: 500; word-break: break-all; }
 
-  .multi-file-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 5px 8px; background: var(--success-bg); border-radius: 3px;
-    margin-bottom: 4px; font-size: 12px; color: var(--success);
-  }
-  .multi-file-item span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .multi-file-remove {
-    background: none; border: none; cursor: pointer;
-    color: var(--muted); font-size: 14px; padding: 0 0 0 8px; flex-shrink: 0;
-  }
-  .multi-file-remove:hover { color: var(--accent); }
+  .multi-file-list { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .multi-file-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--success-bg); color: var(--success); border: 1px solid #a8d5b5; border-radius: 20px; padding: 3px 10px 3px 8px; font-size: 12px; font-weight: 500; }
+  .multi-file-tag button { background: none; border: none; cursor: pointer; color: var(--success); font-size: 14px; line-height: 1; padding: 0; opacity: 0.7; transition: opacity 0.15s; }
+  .multi-file-tag button:hover { opacity: 1; }
+  .multi-add-more { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--accent); text-decoration: underline; cursor: pointer; }
 
-  /* Checklist */
-  .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .type-selector { display: flex; gap: 10px; }
+  .type-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 3px; background: var(--paper); color: var(--muted); font-size: 14px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .type-btn:hover { border-color: var(--accent-light); color: var(--ink); }
+  .type-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 500; }
+
+  .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
   .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
   .check-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
   .check-item.done .check-dot { background: var(--success); }
   .check-item.done { color: var(--success); }
 
-  /* Submit */
   .submit-area { text-align: center; margin-top: 32px; }
-  .submit-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 16px 48px; background: var(--accent); color: #fff;
-    border: none; border-radius: 3px;
-    font-size: 15px; font-family: 'Noto Serif SC', serif; font-weight: 500;
-    cursor: pointer; letter-spacing: 0.05em; transition: all 0.25s;
-    box-shadow: 0 4px 20px rgba(139,58,42,0.25);
-  }
+  .submit-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 48px; background: var(--accent); color: #fff; border: none; border-radius: 3px; font-size: 15px; font-family: 'Noto Serif SC', serif; font-weight: 500; cursor: pointer; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(139,58,42,0.25); }
   .submit-btn:hover { background: #7a3222; box-shadow: 0 6px 30px rgba(139,58,42,0.35); transform: translateY(-1px); }
   .submit-btn:active { transform: translateY(0); }
   .submit-btn:disabled { background: var(--muted); box-shadow: none; cursor: not-allowed; transform: none; }
   .submit-hint { margin-top: 12px; font-size: 12px; color: var(--muted); font-weight: 300; }
 
-  /* Loading */
   .loading-state { display: none; text-align: center; padding: 60px 24px; }
   .loading-state.visible { display: block; }
-  .loading-spinner {
-    width: 40px; height: 40px;
-    border: 2px solid var(--border); border-top-color: var(--accent);
-    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px;
-  }
+  .loading-spinner { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-family: 'Noto Serif SC', serif; font-size: 16px; color: var(--muted); }
   .loading-steps { margin-top: 16px; font-size: 13px; color: var(--muted); font-weight: 300; }
 
-  /* Result */
   .result-section { display: none; margin-top: 40px; }
   .result-section.visible { display: block; }
-  .result-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-  }
+  .result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
   .result-title { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; }
   .score-badge { font-family: 'DM Mono', monospace; font-size: 32px; font-weight: 500; color: var(--accent); line-height: 1; }
   .score-badge span { font-size: 14px; color: var(--muted); margin-left: 4px; }
-
   .result-content { font-size: 14.5px; line-height: 1.9; color: var(--ink); }
   .result-content table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
   .result-content th { background: var(--paper-dark); padding: 10px 12px; text-align: left; font-weight: 500; font-size: 12px; border: 1px solid var(--border); }
   .result-content td { padding: 10px 12px; border: 1px solid var(--border); vertical-align: top; }
   .result-content tr:nth-child(even) td { background: var(--paper); }
-  .result-content h2 { font-family: 'Noto Serif SC', serif; margin: 24px 0 10px; font-size: 17px; border-left: 3px solid var(--accent); padding-left: 12px; }
-  .result-content h3 { font-family: 'Noto Serif SC', serif; margin: 18px 0 8px; font-size: 15px; color: var(--accent); }
+  .result-content h2 { font-family: 'Noto Serif SC', serif; font-size: 17px; border-left: 3px solid var(--accent); padding-left: 12px; margin: 24px 0 10px; }
+  .result-content h3 { font-family: 'Noto Serif SC', serif; font-size: 15px; color: var(--accent); margin: 20px 0 8px; }
   .result-content p { margin-bottom: 12px; }
-  .result-content ul { margin: 10px 0 10px 20px; }
+  .result-content ul, .result-content ol { margin: 10px 0 10px 20px; }
   .result-content li { margin-bottom: 6px; }
   .result-content strong { color: var(--accent); font-weight: 600; }
-  .result-content hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
   .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
   .btn-secondary { padding: 10px 24px; border: 1.5px solid var(--border); border-radius: 3px; background: transparent; color: var(--ink); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; }
@@ -274,7 +128,6 @@
   .btn-copy { padding: 10px 24px; border: 1.5px solid var(--accent); border-radius: 3px; background: transparent; color: var(--accent); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; }
   .btn-copy:hover { background: var(--accent); color: #fff; }
 
-  /* Error */
   .error-msg { background: var(--error-bg); border: 1px solid #f5c6be; border-radius: 4px; padding: 16px 20px; color: var(--accent); font-size: 13.5px; margin-top: 16px; display: none; }
   .error-msg.visible { display: block; }
 
@@ -290,23 +143,21 @@
     <p class="subtitle">上传作业与参考答案，由 AI 导师自动批改并生成详细报告</p>
   </header>
 
-  <!-- API Key -->
   <div class="api-section">
-    <div class="api-section-label">API 密钥配置</div>
+    <div class="api-section-label">Gemini API 密钥配置</div>
     <div class="api-row">
-      <input type="password" class="api-input" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
+      <input type="password" class="api-input" id="apiKey" placeholder="AIza..." autocomplete="off">
       <button class="api-toggle" onclick="toggleApiKey()">显示</button>
     </div>
-    <p class="api-hint">填入 API Key，仅在本地浏览器中使用，不会上传或存储</p>
+    <p class="api-hint">填入 Google AI Studio 的 API Key，仅在本地浏览器中使用，不会上传或存储</p>
   </div>
 
-  <!-- Step 1 -->
   <div class="card">
     <div class="card-header">
       <span class="card-number">01</span>
       <div>
         <div class="card-title">作业类型</div>
-        <div class="card-desc">选择本次批改的翻译类型</div>
+        <div class="card-desc">选择本次批改的翻译类型，上传区域会自动切换</div>
       </div>
     </div>
     <div class="type-selector">
@@ -315,7 +166,6 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
   <div class="card">
     <div class="card-header">
       <span class="card-number">02</span>
@@ -325,101 +175,84 @@
       </div>
     </div>
 
-    <!-- 成绩单翻译 -->
+    <!-- 成绩单 panel -->
     <div class="upload-panel active" id="panel-transcript">
-      <div class="section-label">原始材料 &amp; 参考答案</div>
-      <div class="upload-grid" style="margin-bottom:16px;">
-        <div class="upload-zone" id="zone-original" ondrop="handleDrop(event,'original')" ondragover="handleDragover(event,'original')" ondragleave="handleDragleave('original')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'original')">
+      <div class="upload-grid">
+        <div class="upload-zone" id="zone-t-original" ondrop="handleDrop(event,'t-original')" ondragover="handleDragover(event,'t-original')" ondragleave="handleDragleave('t-original')">
+          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-original')">
           <span class="upload-icon">📄</span>
           <span class="upload-label">原始中文成绩单</span>
           <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-original"></span>
+          <span class="upload-filename" id="fn-t-original"></span>
         </div>
-        <div class="upload-zone" id="zone-answer" ondrop="handleDrop(event,'answer')" ondragover="handleDragover(event,'answer')" ondragleave="handleDragleave('answer')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'answer')">
+        <div class="upload-zone" id="zone-t-answer" ondrop="handleDrop(event,'t-answer')" ondragover="handleDragover(event,'t-answer')" ondragleave="handleDragleave('t-answer')">
+          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-answer')">
           <span class="upload-icon">✅</span>
-          <span class="upload-label">参考答案</span>
+          <span class="upload-label">参考答案（仅供参考）</span>
           <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-answer"></span>
+          <span class="upload-filename" id="fn-t-answer"></span>
         </div>
-      </div>
-      <hr class="section-divider">
-      <div class="section-label">新人作业（Excel + PDF 各一份）</div>
-      <div class="upload-grid">
-        <div class="upload-zone" id="zone-excel" ondrop="handleDrop(event,'excel')" ondragover="handleDragover(event,'excel')" ondragleave="handleDragleave('excel')">
-          <input type="file" accept=".xlsx,.xls,.csv" onchange="handleFile(event,'excel')">
+        <div class="upload-zone" id="zone-t-excel" ondrop="handleDrop(event,'t-excel')" ondragover="handleDragover(event,'t-excel')" ondragleave="handleDragleave('t-excel')">
+          <input type="file" accept=".xlsx,.xls,.csv" onchange="handleFile(event,'t-excel')">
           <span class="upload-icon">📊</span>
           <span class="upload-label">新人作业 · Excel</span>
           <span class="upload-format">XLSX / XLS / CSV</span>
-          <span class="upload-filename" id="fn-excel"></span>
+          <span class="upload-filename" id="fn-t-excel"></span>
         </div>
-        <div class="upload-zone" id="zone-work" ondrop="handleDrop(event,'work')" ondragover="handleDragover(event,'work')" ondragleave="handleDragleave('work')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'work')">
+        <div class="upload-zone" id="zone-t-work" ondrop="handleDrop(event,'t-work')" ondragover="handleDragover(event,'t-work')" ondragleave="handleDragleave('t-work')">
+          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-work')">
           <span class="upload-icon">📑</span>
           <span class="upload-label">新人作业 · PDF</span>
           <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-work"></span>
+          <span class="upload-filename" id="fn-t-work"></span>
         </div>
       </div>
       <div class="checklist">
-        <div class="check-item" id="check-original"><span class="check-dot"></span>原始中文成绩单</div>
-        <div class="check-item" id="check-answer"><span class="check-dot"></span>参考答案</div>
-        <div class="check-item" id="check-excel"><span class="check-dot"></span>新人作业 Excel</div>
-        <div class="check-item" id="check-work"><span class="check-dot"></span>新人作业 PDF</div>
+        <div class="check-item" id="check-t-original"><span class="check-dot"></span>原始中文成绩单</div>
+        <div class="check-item" id="check-t-answer"><span class="check-dot"></span>参考答案</div>
+        <div class="check-item" id="check-t-excel"><span class="check-dot"></span>新人作业 Excel</div>
+        <div class="check-item" id="check-t-work"><span class="check-dot"></span>新人作业 PDF</div>
       </div>
     </div>
 
-    <!-- 证书翻译 -->
+    <!-- 证书 panel -->
     <div class="upload-panel" id="panel-cert">
-      <div class="section-label">
-        原始证书材料
-        <span style="font-size:12px;color:var(--muted);font-weight:300;letter-spacing:0;text-transform:none;margin-left:6px;">可同时上传多个，支持 3–10 份</span>
-      </div>
-      <div class="upload-zone-multi" id="zone-cert-originals"
-           ondrop="handleMultiDrop(event)" ondragover="handleMultiDragover(event)" ondragleave="handleMultiDragleave()">
-        <input type="file" accept=".pdf,image/*" multiple onchange="handleMultiFile(event)" id="multiInput">
-        <span class="upload-icon">📂</span>
-        <span class="upload-label">原始证书文件（可多选）</span>
-        <span class="upload-format">PDF / 图片 · 点击或拖拽上传</span>
-        <div class="multi-file-list" id="multiFileList"></div>
-      </div>
-
-      <hr class="section-divider">
-      <div class="section-label">参考答案 &amp; 新人作业</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:300;">文件格式：上方为原始证书截图，下方为英文翻译</p>
       <div class="upload-grid">
-        <div class="upload-zone" id="zone-cert-answer" ondrop="handleDrop(event,'cert-answer')" ondragover="handleDragover(event,'cert-answer')" ondragleave="handleDragleave('cert-answer')">
-          <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'cert-answer')">
+        <div class="upload-zone-multi" id="zone-c-originals" ondrop="handleDropMulti(event)" ondragover="handleDragoverMulti(event)" ondragleave="handleDragleaveMulti()">
+          <input type="file" accept=".pdf,image/*" multiple onchange="handleMultiFile(event)" id="input-c-originals">
+          <span class="upload-icon">📂</span>
+          <span class="upload-label">原始中文证书（支持多选，最多10份）</span>
+          <span class="upload-format">PDF / 图片 · 可同时选中多个文件或分批添加</span>
+          <div class="multi-file-list" id="multi-file-list"></div>
+        </div>
+        <div class="upload-zone" id="zone-c-answer" ondrop="handleDrop(event,'c-answer')" ondragover="handleDragover(event,'c-answer')" ondragleave="handleDragleave('c-answer')">
+          <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'c-answer')">
           <span class="upload-icon">✅</span>
           <span class="upload-label">参考答案</span>
-          <span class="upload-format">PDF / Word</span>
-          <span class="upload-filename" id="fn-cert-answer"></span>
+          <span class="upload-format">PDF / Word / 图片</span>
+          <span class="upload-filename" id="fn-c-answer"></span>
         </div>
-        <div class="upload-zone" id="zone-cert-work" ondrop="handleDrop(event,'cert-work')" ondragover="handleDragover(event,'cert-work')" ondragleave="handleDragleave('cert-work')">
-          <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'cert-work')">
-          <span class="upload-icon">📝</span>
+        <div class="upload-zone" id="zone-c-work" ondrop="handleDrop(event,'c-work')" ondragover="handleDragover(event,'c-work')" ondragleave="handleDragleave('c-work')">
+          <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'c-work')">
+          <span class="upload-icon">📑</span>
           <span class="upload-label">新人作业</span>
-          <span class="upload-format">PDF / Word</span>
-          <span class="upload-filename" id="fn-cert-work"></span>
+          <span class="upload-format">PDF / Word / 图片</span>
+          <span class="upload-filename" id="fn-c-work"></span>
         </div>
       </div>
       <div class="checklist">
-        <div class="check-item" id="check-cert-originals"><span class="check-dot"></span>原始证书材料</div>
-        <div class="check-item" id="check-cert-answer"><span class="check-dot"></span>参考答案</div>
-        <div class="check-item" id="check-cert-work"><span class="check-dot"></span>新人作业</div>
-        <div style="visibility:hidden" class="check-item"><span class="check-dot"></span></div>
+        <div class="check-item" id="check-c-originals"><span class="check-dot"></span>原始中文证书</div>
+        <div class="check-item" id="check-c-answer"><span class="check-dot"></span>参考答案</div>
+        <div class="check-item" id="check-c-work"><span class="check-dot"></span>新人作业</div>
       </div>
     </div>
-
   </div>
 
-  <!-- Submit -->
   <div class="submit-area">
     <button class="submit-btn" id="submitBtn" onclick="startGrading()">
       <span>开始批改</span><span>→</span>
     </button>
-    <p class="submit-hint">批改过程约需 30–90 秒，请耐心等待</p>
+    <p class="submit-hint">批改过程约需 30–90 秒，证书数量越多时间越长，请耐心等待</p>
   </div>
 
   <div class="error-msg" id="errorMsg"></div>
@@ -446,238 +279,243 @@
 </div>
 
 <script>
-// ── State ──────────────────────────────────────────────
-const files = { original:null, answer:null, excel:null, work:null, 'cert-answer':null, 'cert-work':null };
-const certOriginals = [];
+const files = { 't-original': null, 't-answer': null, 't-excel': null, 't-work': null, 'c-answer': null, 'c-work': null };
+let certOriginals = [];
 let jobType = '成绩单翻译';
 let resultText = '';
 
-// ── Type ───────────────────────────────────────────────
+// ── Type selector ──────────────────────────────────────
 function selectType(type, btn) {
   jobType = type;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const isCert = type === '证书翻译';
-  document.getElementById('panel-transcript').classList.toggle('active', !isCert);
-  document.getElementById('panel-cert').classList.toggle('active', isCert);
-  document.getElementById('uploadDesc').textContent = isCert
-    ? '请上传全部三类材料，缺一不可'
-    : '请上传全部四份材料，缺一不可';
+  document.getElementById('panel-transcript').classList.toggle('active', type === '成绩单翻译');
+  document.getElementById('panel-cert').classList.toggle('active', type === '证书翻译');
+  document.getElementById('uploadDesc').textContent =
+    type === '成绩单翻译' ? '请上传全部四份材料，缺一不可' : '请上传原始证书（可多份）、参考答案和新人作业';
 }
 
-// ── API Key ────────────────────────────────────────────
 function toggleApiKey() {
   const input = document.getElementById('apiKey');
   const btn = event.target;
-  if (input.type === 'password') { input.type = 'text'; btn.textContent = '隐藏'; }
-  else { input.type = 'password'; btn.textContent = '显示'; }
+  input.type = input.type === 'password' ? 'text' : 'password';
+  btn.textContent = input.type === 'password' ? '显示' : '隐藏';
 }
 
 // ── Single file ────────────────────────────────────────
-function handleFile(e, key) { const f = e.target.files[0]; if (f) setFile(key, f); }
-
-function handleDrop(e, key) {
-  e.preventDefault(); handleDragleave(key);
-  const f = e.dataTransfer.files[0]; if (f) setFile(key, f);
-}
-function handleDragover(e, key) { e.preventDefault(); document.getElementById('zone-'+key).classList.add('dragover'); }
-function handleDragleave(key) { document.getElementById('zone-'+key).classList.remove('dragover'); }
-
+function handleFile(event, key) { const file = event.target.files[0]; if (file) setFile(key, file); }
+function handleDrop(event, key) { event.preventDefault(); handleDragleave(key); const file = event.dataTransfer.files[0]; if (file) setFile(key, file); }
+function handleDragover(event, key) { event.preventDefault(); document.getElementById('zone-' + key).classList.add('dragover'); }
+function handleDragleave(key) { document.getElementById('zone-' + key).classList.remove('dragover'); }
 function setFile(key, file) {
   files[key] = file;
-  const zone = document.getElementById('zone-'+key);
-  const fn   = document.getElementById('fn-'+key);
-  const chk  = document.getElementById('check-'+key);
-  if (zone) zone.classList.add('has-file');
-  if (fn)   fn.textContent = '✓ ' + file.name;
-  if (chk)  chk.classList.add('done');
+  document.getElementById('zone-' + key).classList.add('has-file');
+  document.getElementById('fn-' + key).textContent = '✓ ' + file.name;
+  document.getElementById('check-' + key).classList.add('done');
 }
 
 // ── Multi file ─────────────────────────────────────────
-function handleMultiFile(e) { addCertFiles(Array.from(e.target.files)); e.target.value = ''; }
-
-function handleMultiDrop(e) { e.preventDefault(); handleMultiDragleave(); addCertFiles(Array.from(e.dataTransfer.files)); }
-function handleMultiDragover(e) { e.preventDefault(); document.getElementById('zone-cert-originals').classList.add('dragover'); }
-function handleMultiDragleave() { document.getElementById('zone-cert-originals').classList.remove('dragover'); }
-
+function handleMultiFile(event) { addCertFiles(Array.from(event.target.files)); event.target.value = ''; }
+function handleDropMulti(event) { event.preventDefault(); handleDragleaveMulti(); addCertFiles(Array.from(event.dataTransfer.files).filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'))); }
+function handleDragoverMulti(event) { event.preventDefault(); document.getElementById('zone-c-originals').classList.add('dragover'); }
+function handleDragleaveMulti() { document.getElementById('zone-c-originals').classList.remove('dragover'); }
 function addCertFiles(newFiles) {
-  newFiles.forEach(f => { if (!certOriginals.find(e => e.name===f.name && e.size===f.size)) certOriginals.push(f); });
-  renderMultiList();
+  newFiles.forEach(f => { if (certOriginals.length >= 10) return; if (!certOriginals.find(e => e.name === f.name && e.size === f.size)) certOriginals.push(f); });
+  renderCertFileList();
+}
+function removeCertFile(index) { certOriginals.splice(index, 1); renderCertFileList(); }
+function renderCertFileList() {
+  const list = document.getElementById('multi-file-list');
+  const zone = document.getElementById('zone-c-originals');
+  const check = document.getElementById('check-c-originals');
+  if (certOriginals.length === 0) { list.innerHTML = ''; zone.classList.remove('has-file'); check.classList.remove('done'); return; }
+  zone.classList.add('has-file'); check.classList.add('done');
+  list.innerHTML = certOriginals.map((f, i) => `<span class="multi-file-tag">📄 ${f.name}<button onclick="removeCertFile(${i})">×</button></span>`).join('') +
+    (certOriginals.length < 10 ? `<span class="multi-add-more" onclick="document.getElementById('input-c-originals').click()">+ 继续添加</span>` : '');
 }
 
-function removeCertFile(i) { certOriginals.splice(i, 1); renderMultiList(); }
-
-function renderMultiList() {
-  const list = document.getElementById('multiFileList');
-  const zone = document.getElementById('zone-cert-originals');
-  const chk  = document.getElementById('check-cert-originals');
-  if (certOriginals.length === 0) {
-    list.innerHTML = ''; zone.classList.remove('has-file'); chk.classList.remove('done'); return;
-  }
-  zone.classList.add('has-file'); chk.classList.add('done');
-  list.innerHTML = certOriginals.map((f,i) =>
-    `<div class="multi-file-item"><span title="${f.name}">✓ ${f.name}</span><button class="multi-file-remove" onclick="removeCertFile(${i});event.stopPropagation()">✕</button></div>`
-  ).join('') + (certOriginals.length < 10
-    ? `<div style="text-align:center;margin-top:8px;font-size:12px;color:var(--accent);cursor:pointer" onclick="document.getElementById('multiInput').click();event.stopPropagation()">＋ 继续添加文件</div>`
-    : '');
-}
-
-// ── Helpers ────────────────────────────────────────────
+// ── File → Base64 ──────────────────────────────────────
 function fileToBase64(file) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(',')[1]);
-    r.onerror = rej;
-    r.readAsDataURL(file);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
-function getMediaType(file) {
+function getGeminiMimeType(file) {
   if (file.type === 'application/pdf') return 'application/pdf';
   if (file.type.startsWith('image/')) return file.type;
-  return 'application/pdf'; // fallback for docx etc — Claude will try to parse
+  if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) return 'application/pdf';
+  return 'application/pdf';
 }
 
-function validate() {
-  if (jobType === '成绩单翻译') {
-    if (!files.original) return '请上传原始中文成绩单';
-    if (!files.answer)   return '请上传参考答案';
-    if (!files.excel)    return '请上传新人作业 Excel';
-    if (!files.work)     return '请上传新人作业 PDF';
-  } else {
-    if (certOriginals.length === 0) return '请上传至少一份原始证书材料';
-    if (!files['cert-answer'])      return '请上传参考答案';
-    if (!files['cert-work'])        return '请上传新人作业';
-  }
-  return null;
+// ── Build Gemini inline part ───────────────────────────
+async function buildPart(label, file) {
+  const b64 = await fileToBase64(file);
+  const mimeType = getGeminiMimeType(file);
+  return [
+    { text: label },
+    { inline_data: { mime_type: mimeType, data: b64 } }
+  ];
 }
 
 // ── Grading ────────────────────────────────────────────
 async function startGrading() {
   const apiKey = document.getElementById('apiKey').value.trim();
-  if (!apiKey) return showError('请先填入 API Key');
-  const err = validate();
-  if (err) return showError(err);
+  if (!apiKey) return showError('请先填入 Gemini API Key（格式：AIza...）');
+
+  if (jobType === '成绩单翻译') {
+    if (!files['t-original']) return showError('请上传原始中文成绩单');
+    if (!files['t-answer'])   return showError('请上传参考答案');
+    if (!files['t-excel'])    return showError('请上传新人作业 Excel');
+    if (!files['t-work'])     return showError('请上传新人作业 PDF');
+  } else {
+    if (certOriginals.length === 0) return showError('请至少上传一份原始中文证书');
+    if (!files['c-answer'])         return showError('请上传参考答案');
+    if (!files['c-work'])           return showError('请上传新人作业');
+  }
 
   hideError(); showLoading();
 
   try {
-    let userContent = [];
+    const parts = [];
+
+    // System instruction as first text part
+    parts.push({ text: buildSystemPrompt() });
 
     if (jobType === '成绩单翻译') {
+      parts.push({ text: '请批改以下【成绩单翻译】作业。新人提交了Excel（翻译文字内容）和PDF（排版成品）两份，内容一致，请综合评估后合并给出一个总分。' });
       setLoadingStep('正在读取原始成绩单…');
-      const [origB64, ansB64, workB64] = await Promise.all([
-        fileToBase64(files.original),
-        fileToBase64(files.answer),
-        fileToBase64(files.work)
-      ]);
-      setLoadingStep('AI 导师正在批改中，请稍候…');
-      userContent = [
-        { type:'text', text:'请批改以下【成绩单翻译】作业。新人同时提交了Excel（翻译内容）和PDF（排版成品），内容一致，请综合评估合并给出一个总分（满分100分）。' },
-        { type:'text', text:'【材料一：原始中文成绩单】' },
-        { type:'document', source:{ type:'base64', media_type:getMediaType(files.original), data:origB64 } },
-        { type:'text', text:'【材料二：参考答案】' },
-        { type:'document', source:{ type:'base64', media_type:getMediaType(files.answer), data:ansB64 } },
-        { type:'text', text:'【材料三：新人作业 PDF 排版版本】' },
-        { type:'document', source:{ type:'base64', media_type:getMediaType(files.work), data:workB64 } },
-        { type:'text', text:`【材料四：新人作业 Excel 文件名】${files.excel.name}（Excel 与 PDF 内容一致，排版评估以 PDF 为准）\n\n请严格按系统格式输出批改报告。` }
-      ];
-
+      parts.push(...await buildPart('【材料一：原始中文成绩单】', files['t-original']));
+      setLoadingStep('正在读取参考答案…');
+      parts.push(...await buildPart('【材料二：参考答案（仅供参考，不作为扣分依据）】', files['t-answer']));
+      setLoadingStep('正在读取新人作业 PDF…');
+      parts.push(...await buildPart('【材料三：新人作业（PDF排版版本）】', files['t-work']));
+      parts.push({ text: `【材料四：新人作业Excel文件名】${files['t-excel'].name}\nExcel与PDF内容一致，排版以PDF为准，翻译内容综合两者判断。\n\n请严格按系统格式输出批改报告。` });
     } else {
-      // 证书翻译：逐个读取
-      const certBlocks = [];
+      parts.push({ text: `请批改以下【证书翻译】作业。共有 ${certOriginals.length} 份原始证书。参考答案和新人作业的格式均为：原始证书截图在上，英文翻译在下。请逐份证书对照批改，最终合并出一个总分（满分100分）。` });
       for (let i = 0; i < certOriginals.length; i++) {
-        setLoadingStep(`正在读取原始证书 ${i+1} / ${certOriginals.length}…`);
-        const b64 = await fileToBase64(certOriginals[i]);
-        certBlocks.push({ type:'text', text:`【原始证书 ${i+1}：${certOriginals[i].name}】` });
-        certBlocks.push({ type:'document', source:{ type:'base64', media_type:getMediaType(certOriginals[i]), data:b64 } });
+        setLoadingStep(`正在读取第 ${i+1} / ${certOriginals.length} 份原始证书…`);
+        parts.push(...await buildPart(`【原始证书 ${i+1}：${certOriginals[i].name}】`, certOriginals[i]));
       }
-      setLoadingStep('正在读取参考答案与新人作业…');
-      const [ansB64, workB64] = await Promise.all([
-        fileToBase64(files['cert-answer']),
-        fileToBase64(files['cert-work'])
-      ]);
-      setLoadingStep('AI 导师正在批改中，请稍候…');
-      userContent = [
-        { type:'text', text:`请批改以下【证书翻译】作业。共有 ${certOriginals.length} 份原始证书，参考答案和新人作业格式均为「原始证书截图＋英文翻译」。请逐份对比批改，最终合并给出一个总分（满分100分）。` },
-        { type:'text', text:`━━ 原始证书材料（共 ${certOriginals.length} 份）━━` },
-        ...certBlocks,
-        { type:'text', text:'━━ 参考答案 ━━' },
-        { type:'document', source:{ type:'base64', media_type:getMediaType(files['cert-answer']), data:ansB64 } },
-        { type:'text', text:'━━ 新人作业 ━━' },
-        { type:'document', source:{ type:'base64', media_type:getMediaType(files['cert-work']), data:workB64 } },
-        { type:'text', text:'请严格按系统格式输出批改报告。' }
-      ];
+      setLoadingStep('正在读取参考答案…');
+      parts.push(...await buildPart('【参考答案（原件截图 + 英文翻译）】', files['c-answer']));
+      setLoadingStep('正在读取新人作业…');
+      parts.push(...await buildPart('【新人作业（原件截图 + 英文翻译）】', files['c-work']));
+      parts.push({ text: '请严格按系统格式输出批改报告。' });
     }
 
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body: JSON.stringify({
-        model:'claude-opus-4-5',
-        max_tokens: 4000,
-        system: SYSTEM_PROMPT,
-        messages:[{ role:'user', content:userContent }]
-      })
-    });
+    setLoadingStep('AI 导师正在逐项批改，请稍候…');
 
-    if (!resp.ok) {
-      const e = await resp.json().catch(()=>({}));
-      throw new Error(e.error?.message || `API 请求失败 (${resp.status})`);
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts }],
+          generationConfig: { maxOutputTokens: 8192, temperature: 0.2 }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      const msg = err.error?.message || `请求失败 (${response.status})`;
+      throw new Error(msg);
     }
 
-    const data = await resp.json();
-    resultText = data.content.map(b => b.text||'').join('\n');
+    const data = await response.json();
+    resultText = data.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('\n') || '';
+    if (!resultText) throw new Error('AI 未返回内容，请重试');
     showResult(resultText);
 
-  } catch(e) {
+  } catch (err) {
     hideLoading();
-    showError('批改失败：' + e.message);
+    showError('批改失败：' + err.message);
   }
 }
 
 // ── System Prompt ──────────────────────────────────────
-const SYSTEM_PROMPT = `# 角色定位
-你是一位留学行业交付部门的资深导师，负责批改新入职员工的翻译作业。批改风格：严谨指出问题，同时具有教学引导性，帮助新人理解错误原因并掌握正确方法。
+function buildSystemPrompt() {
+  return `你是一位留学行业交付部门的资深导师，专门负责批改新入职员工的翻译作业。批改风格：严谨指出问题，同时具有教学引导性，帮助新人理解错误原因并掌握正确方法。所有输出使用中文。
 
-# 作业类型
-1. 成绩单翻译：中文成绩单→英文。新人提交 Excel（翻译内容）+ PDF（排版成品），内容一致，合并评分。
-2. 证书翻译：中文证书→英文。可能涉及多份证书；参考答案和新人作业格式均为「原始证书截图＋英文翻译」，逐份批改后合并评分。
+# 两种作业类型说明
+
+## 成绩单翻译
+- 原始材料：客户中文成绩单（图片型PDF）
+- 新人作业：Excel（翻译文字）+ PDF（排版成品），内容一致，合并一个总分
+- 参考答案：仅供参考，不作为扣分依据
+- 批改基准：以原始中文材料为唯一基准
+
+## 证书翻译
+- 原始材料：多份中文证书，每份单独文件
+- 新人作业 & 参考答案：格式均为"原始证书截图（上）+ 英文翻译（下）"，Word或PDF
+- 批改基准：以参考答案为标准对照新人译文
 
 # 批改维度（总分100分）
 
-## 1. 翻译准确性（核心，权重最高）
-- 核心字段，必须一致（错误直接扣分）：学校/机构名称、所有数字（分数、日期、编号、学分等）
-- 可以灵活（合理同义翻译不扣分，但可在建议中说明）：课程名称、描述性文字措辞差异
-- 翻译错误/遗漏/产生歧义 → 扣分
+## 1. 翻译准确性
+
+### 成绩单翻译专用规则
+
+总体原则：批改基准为原始中文材料，参考答案仅供参考，不作为扣分依据。只要译文与原文语义准确一致，即使与参考答案表达不同，不扣分。
+
+不扣分的情况（合理差异，可在改进建议中提示参考答案规范表达）：
+- 同义词/近义词替换：如 Method/Approach、Time/Date、Enrollment/Admission
+- 单复数差异：如 Application/Applications，不影响语义
+- 词序调整：语义不变即可
+- 合理增减冠词、介词：不影响核心语义
+- 课程名称的同义表达：准确传达原文含义即可
+- 院系、专业、学校名称：语义准确、无拼写错误即可，不强制对齐参考答案
+- 标题类文字：语义准确、无拼写错误即可
+- 术语合理同义表达（均不扣分）：
+  * 必修：R / Required / Compulsory
+  * 限选：L / Limited Elective / Restricted Elective
+  * 专任或任选：E / Elective / Special Compulsory
+
+扣分的情况（每处独立语义单元出错扣1分）：
+- 信息错译：译文与原文语义不符，如"策划学"译为"Planning Science"（多译了Science）
+- 信息漏译：原文有内容但译文完全省略，如课程副标题、班级编号等
+- 拼写错误：无论是否造成语义改变，一律扣分。如 Data≠Date、Metal≠Mental、Modem≠Modern
+- 数字错误：学分、分数、GPA、日期、编号等任何数字与原文不符
+- 无中生有增译：原文没有的内容被加入译文，如"形势与政策"译为"Situation and Policy Education"
+
+核心错误标注规则（同样扣1分，但在报告中特别标注「核心错误」）：
+- 学生姓名翻译错误
+- 学校名称翻译错误
+- 所有数字错误
+- 任何信息的错译
+- 任何信息的漏译
+- 拼写错误（无论是否造成语义改变）
+
+### 证书翻译专用规则
+批改基准是参考答案，逐项对照检查。
+核心必须一致（标注「核心错误」）：证书名称、姓名、日期、所有数字及编号
+可以灵活：描述性文字的合理同义表达
 
 ## 2. 翻译完整性
-- 原文所有信息必须全部体现，每处漏译扣1分
-- 高风险漏译点：备注栏、页眉页脚、印章文字、日期、签名行说明、证书编号
+原文所有内容是否全部翻译，包括印章文字、日期、签名行、页眉页脚、备注栏
+每处漏译扣1分，并标注「核心错误」
 
 ## 3. 术语规范性
-- 留学行业标准术语：学位名称、院系、课程类型（必修/选修）、成绩等级
-- 不规范扣1分
+成绩单翻译：术语语义准确即可，不强求与参考答案一致。只有明显错误或产生歧义才扣分。
+证书翻译：须符合留学行业标准，与参考答案不一致且无合理依据时扣1分。
 
-## 4. 排版与格式（成绩单PDF / 证书翻译整体版面）
-- 对照原始材料评估排版相似度：表格结构、字段对齐、视觉和谐度、信息层级
-- 明显偏差扣1分
+## 4. 排版与格式
+整体排版与原件相似度（结构、对齐、层级、视觉和谐度），明显偏差扣1分。
 
 # 扣分规则
 - 每个独立语义单元出错 = 扣1分
-- 核心字段错误同样1分/处，但在报告中标注「核心错误」
-- 标点符号错误：不扣分，在报告末尾单独提示
-- 最低0分，不出现负分
+- 核心错误：扣1分，同时标注「核心错误」
+- 标点问题：不扣分，在【标点说明】中提示
+- 最低0分
 
-# 输出格式（严格按此结构，不得省略任何部分）
+# 输出格式（严格按此结构）
 
 **【作业批改报告】**
-
 **作业类型：** [成绩单翻译 / 证书翻译]
 **最终得分：** XX / 100
 
@@ -688,101 +526,93 @@ const SYSTEM_PROMPT = `# 角色定位
 | 序号 | 问题位置 | 原文 | 参考答案 | 新人译文 | 问题类型 | 是否核心错误 | 扣分 |
 |------|----------|------|----------|----------|----------|--------------|------|
 
-**本次扣分合计：** -XX分
+**本次扣分合计：** -XX 分
 
 ---
 
 **【总结评语】**
-
-（2–3句，先肯定亮点，再指出主要问题，语气鼓励且清晰直接）
+（2-3句，先肯定优点，再点出主要问题，语气鼓励但清晰直接）
 
 ---
 
 **【主要问题分析】**
-
-（每类问题：具体表现 → 错误原因 → 正确做法）
+（每类问题：具体表现 → 为什么错 → 正确做法）
 
 ---
 
 **【改进建议】**
-
-1.
-2.
-3.（如有）
+（3条以内，具体可操作）
 
 ---
 
 **【标点说明】**（如有，列出但注明不计入扣分）
 
 # 重要原则
-1. 只根据提供的参考答案和原始材料批改，不自行发明标准
-2. 参考答案与原文有明显出入时，以原文为准并在报告中注明
-3. 图片清晰度不足无法识别时，明确标注「因图片清晰度不足，以下内容未能核实：[列出]」，不猜测内容
-4. 所有输出使用中文；问题清单中原文列用中文，参考答案与新人译文列用英文`;
+1. 成绩单翻译以原始材料为唯一批改基准，参考答案不作为扣分依据
+2. 证书翻译以参考答案为批改基准
+3. 合理同义表达一律不扣分，可在改进建议中提示更规范表达
+4. 拼写错误无论是否影响语义，一律扣分并标注「核心错误」
+5. 图片不清晰时，注明「因清晰度不足，以下内容未能核实」，不猜测
+6. 问题清单中原文列用中文，参考答案列和新人译文列用英文`;
+}
 
-// ── Render ─────────────────────────────────────────────
+// ── Render result ──────────────────────────────────────
 function renderMarkdown(text) {
-  let h = text;
-  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  h = h.replace(/^---$/gm, '<hr>');
-  h = h.replace(/^# (.+)$/gm, '<h2>$1</h2>');
-  h = h.replace(/^#{2,3} (.+)$/gm, '<h3>$1</h3>');
-
-  // Tables
-  h = h.replace(/(\|.+\|\n?)+/g, block => {
-    const rows = block.trim().split('\n').filter(r => r.trim() && !r.match(/^\|[-| ]+\|$/));
-    if (!rows.length) return '';
-    const toRow = (r, tag) => '<tr>' + r.split('|').slice(1,-1).map(c=>`<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
-    return `<table><thead>${toRow(rows[0],'th')}</thead><tbody>${rows.slice(1).map(r=>toRow(r,'td')).join('')}</tbody></table>`;
-  });
-
-  h = h.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
-  h = h.replace(/^[-•] (.+)$/gm, '<li>$1</li>');
-  h = h.replace(/(<li>[\s\S]*?<\/li>\n?)+/g, m => `<ul>${m}</ul>`);
-  h = h.replace(/\n{2,}/g, '</p><p>');
-  h = h.replace(/\n/g, '<br>');
-  return `<p>${h}</p>`;
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^#{2,3} (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:20px 0">')
+    .replace(/^\| (.+) \|$/gm, line => {
+      const cells = line.split('|').slice(1, -1).map(c => c.trim());
+      return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+    })
+    .replace(/(<tr>.*<\/tr>\n?)+/gs, rows => {
+      const allRows = rows.trim().split('\n');
+      const header = allRows[0].replace(/<td>/g, '<th>').replace(/<\/td>/g, '</th>');
+      const body = allRows.slice(2).join('\n');
+      return `<table><thead>${header}</thead><tbody>${body}</tbody></table>`;
+    })
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>');
 }
 
-function extractScore(text) {
-  const m = text.match(/最终得分[：:]\s*(\d+)/);
-  return m ? m[1] : '—';
-}
+function extractScore(text) { const m = text.match(/最终得分[：:]\s*(\d+)/); return m ? m[1] : '—'; }
 
 function showResult(text) {
   hideLoading();
   document.getElementById('scoreBadge').innerHTML = extractScore(text) + '<span>/ 100</span>';
   document.getElementById('resultContent').innerHTML = renderMarkdown(text);
   document.getElementById('resultSection').classList.add('visible');
-  document.getElementById('resultSection').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── UI helpers ─────────────────────────────────────────
-function showLoading() { document.getElementById('submitBtn').disabled=true; document.getElementById('loadingState').classList.add('visible'); document.getElementById('resultSection').classList.remove('visible'); }
-function hideLoading() { document.getElementById('loadingState').classList.remove('visible'); document.getElementById('submitBtn').disabled=false; }
+function showLoading() { document.getElementById('submitBtn').disabled = true; document.getElementById('loadingState').classList.add('visible'); document.getElementById('resultSection').classList.remove('visible'); }
+function hideLoading() { document.getElementById('loadingState').classList.remove('visible'); document.getElementById('submitBtn').disabled = false; }
 function setLoadingStep(msg) { document.getElementById('loadingStep').textContent = msg; }
-function showError(msg) { const el=document.getElementById('errorMsg'); el.textContent=msg; el.classList.add('visible'); hideLoading(); }
+function showError(msg) { const el = document.getElementById('errorMsg'); el.textContent = msg; el.classList.add('visible'); hideLoading(); }
 function hideError() { document.getElementById('errorMsg').classList.remove('visible'); }
 
 function copyResult() {
   navigator.clipboard.writeText(resultText).then(() => {
-    const btn = event.target;
-    btn.textContent = '已复制 ✓';
-    setTimeout(()=> btn.textContent='复制报告', 2000);
+    const btn = event.target; btn.textContent = '已复制 ✓';
+    setTimeout(() => btn.textContent = '复制报告', 2000);
   });
 }
 
 function resetForm() {
-  Object.keys(files).forEach(k => files[k]=null);
-  certOriginals.length = 0;
-  renderMultiList();
+  Object.keys(files).forEach(k => files[k] = null);
+  certOriginals = []; renderCertFileList();
   document.querySelectorAll('.upload-zone').forEach(z => z.classList.remove('has-file'));
-  document.querySelectorAll('.upload-filename').forEach(f => f.textContent='');
+  document.querySelectorAll('.upload-filename').forEach(f => f.textContent = '');
   document.querySelectorAll('.check-item').forEach(c => c.classList.remove('done'));
-  document.querySelectorAll('input[type=file]').forEach(i => i.value='');
+  document.querySelectorAll('input[type=file]').forEach(i => i.value = '');
   document.getElementById('resultSection').classList.remove('visible');
   hideError();
-  window.scrollTo({ top:0, behavior:'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 </body>
