@@ -212,10 +212,10 @@
   <div class="api-section">
     <div class="api-section-label">API 密钥配置</div>
     <div class="api-row">
-      <input type="password" class="api-input" id="apiKey" placeholder="AIza..." autocomplete="off">
+      <input type="password" class="api-input" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
       <button class="api-toggle" onclick="toggleApiKey()">显示</button>
     </div>
-    <p class="api-hint">填入 Google Gemini API Key，仅在本地浏览器中使用，不会上传或存储 · 当前模型：<span id="modelIndicator" style="font-family:'DM Mono',monospace;color:var(--accent)">—</span></p>
+    <p class="api-hint">填入 Anthropic API Key，仅在本地浏览器中使用，不会上传或存储</p>
   </div>
 
   <!-- 01 作业类型 + 批改模式 -->
@@ -696,93 +696,58 @@ async function buildUserContent(traineeFile, traineeName, onStep) {
 }
 
 // ── Gemini helpers ────────────────────────────────────
-const GEMINI_PRIMARY = 'gemini-2.5-flash';
-const GEMINI_FALLBACK = 'gemini-2.5-flash-lite';
-
-// Convert Anthropic-style content blocks → Gemini parts
-function toGeminiParts(contentBlocks) {
-  return contentBlocks.map(block => {
-    if (block.type === 'text') return { text: block.text };
-    if (block.type === 'document') {
-      return { inlineData: { mimeType: block.source.media_type, data: block.source.data } };
-    }
-    return { text: '' };
-  }).filter(p => p.text !== '' || p.inlineData);
-}
-
-// Convert conversation history to Gemini contents array
-function toGeminiContents(messages) {
-  return messages.map(m => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: Array.isArray(m.content)
-      ? toGeminiParts(m.content)
-      : [{ text: m.content }]
-  }));
-}
-
-async function callGeminiModel(model, geminiContents, apiKey) {
-  const systemPrompt = buildSystemPrompt();
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
-  const body = {
-    systemInstruction: { parts: [{ text: systemPrompt }] },
-    contents: geminiContents,
-    generationConfig: { maxOutputTokens: 65536 }
-  };
-  const resp = await fetch(url, {
+// ── Call API for one trainee ──────────────────────────
+async function callGradingAPI(userContent, apiKey) {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 8000,
+      system: buildSystemPrompt(),
+      messages: [{ role: 'user', content: userContent }]
+    })
   });
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));
-    const msg = err.error?.message || 'HTTP ' + resp.status;
-    throw Object.assign(new Error(msg), { status: resp.status });
+    throw new Error(err.error?.message || 'API 请求失败 (' + resp.status + ')');
   }
   const data = await resp.json();
-  const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('\n');
-  if (!text) throw new Error('模型未返回内容，请重试');
+  const text = data.content.map(b => b.text || '').join('\n');
+  if (!text) throw new Error('AI 未返回内容，请重试');
   return text;
 }
 
-function setModelIndicator(model) {
-  const el = document.getElementById('modelIndicator');
-  if (el) el.textContent = model;
-}
-
-// ── Call API for one trainee (with fallback) ──────────
-async function callGradingAPI(userContent, apiKey) {
-  const geminiContents = toGeminiContents([{ role: 'user', content: userContent }]);
-  // Try primary model first
-  try {
-    const text = await callGeminiModel(GEMINI_PRIMARY, geminiContents, apiKey);
-    setModelIndicator(GEMINI_PRIMARY);
-    return text;
-  } catch (err) {
-    // Fallback on rate limit (429), quota (403), or model unavailable (400/404)
-    const fallbackCodes = [400, 403, 404, 429, 500, 503];
-    if (!fallbackCodes.includes(err.status)) throw err;
-    console.warn('Primary model failed (' + err.message + '), falling back to ' + GEMINI_FALLBACK);
-    setLoadingStep('主模型不可用，切换至 ' + GEMINI_FALLBACK + '…');
-    const text = await callGeminiModel(GEMINI_FALLBACK, geminiContents, apiKey);
-    setModelIndicator(GEMINI_FALLBACK + ' (fallback)');
-    return text;
-  }
-}
-
-// ── Call API for followup (with history + fallback) ───
+// ── Call API for followup ─────────────────────────────
 async function callFollowupAPI(messages, apiKey) {
-  const geminiContents = toGeminiContents(messages);
-  try {
-    const text = await callGeminiModel(GEMINI_PRIMARY, geminiContents, apiKey);
-    setModelIndicator(GEMINI_PRIMARY);
-    return text;
-  } catch (err) {
-    const fallbackCodes = [400, 403, 404, 429, 500, 503];
-    if (!fallbackCodes.includes(err.status)) throw err;
-    const text = await callGeminiModel(GEMINI_FALLBACK, geminiContents, apiKey);
-    setModelIndicator(GEMINI_FALLBACK + ' (fallback)');
-    return text;
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2000,
+      system: buildSystemPrompt(),
+      messages
+    })
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error?.message || 'API 请求失败 (' + resp.status + ')');
   }
+  const data = await resp.json();
+  const text = data.content.map(b => b.text || '').join('\n');
+  if (!text) throw new Error('AI 未返回内容，请重试');
+  return text;
 }
 
 // ── Validation ─────────────────────────────────────────
@@ -1054,31 +1019,78 @@ function addSummaryAvgRow() {
 
 // ── Render ─────────────────────────────────────────────
 function renderMarkdown(text) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^#{2,3} (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:20px 0">')
-    .replace(/^\|[-| :]+\|$/gm, '___TBLSEP___')  // mark separator rows
-    .replace(/^\| (.+) \|$/gm, line => {
-      const cells = line.split('|').slice(1, -1).map(c => c.trim());
-      return '<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
-    })
-    .replace(/(<tr>.*<\/tr>\n?|___TBLSEP___\n?)+/gs, rows => {
-      const lines = rows.trim().split('\n').filter(l => l.trim());
-      const headerLine = lines[0];
-      const isHeader = headerLine.startsWith('<tr>');
-      if (!isHeader) return '';
-      const header = headerLine.replace(/<td>/g, '<th>').replace(/<\/td>/g, '</th>');
-      // skip separator lines (___TBLSEP___), keep only <tr> body rows
-      const bodyRows = lines.slice(1).filter(l => l.startsWith('<tr>'));
-      return '<table><thead>' + header + '</thead><tbody>' + bodyRows.join('') + '</tbody></table>';
-    })
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>')
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    .replace(/\n{2,}/g, '</p><p>')
-    .replace(/\n/g, '<br>');
+  const lines = text.split('\n');
+  const out = [];
+  let inTable = false;
+  let headerCells = null;
+  let bodyRows = [];
+
+  const flushTable = () => {
+    if (!headerCells) return;
+    const thHtml = '<tr>' + headerCells.map(c => '<th>' + c + '</th>').join('') + '</tr>';
+    const tbHtml = bodyRows.join('');
+    out.push('<table><thead>' + thHtml + '</thead><tbody>' + tbHtml + '</tbody></table>');
+    headerCells = null;
+    bodyRows = [];
+    inTable = false;
+  };
+
+  const parseRow = line => line.split('|').slice(1, -1).map(c => c.trim());
+  const isSep = line => /^\|[-| :]+\|$/.test(line.trim());
+  const isRow = line => /^\|.+\|$/.test(line.trim());
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (isRow(trimmed)) {
+      if (isSep(trimmed)) {
+        // separator row — skip, but signals that previous row was a header
+        inTable = true;
+        continue;
+      }
+      const cells = parseRow(trimmed);
+      if (!inTable) {
+        // first row of a new table group
+        flushTable();
+        headerCells = cells;
+        inTable = true;
+      } else if (!headerCells) {
+        headerCells = cells;
+      } else {
+        // check if this row looks like a repeated header (same cell count & first cell matches)
+        const looksLikeHeader = headerCells &&
+          cells.length === headerCells.length &&
+          cells[0] === headerCells[0] &&
+          cells[1] === headerCells[1];
+        if (looksLikeHeader) {
+          // skip repeated header rows
+          continue;
+        }
+        bodyRows.push('<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>');
+      }
+    } else {
+      // non-table line
+      if (inTable) flushTable();
+
+      // standard markdown transforms
+      let l = trimmed;
+      l = l.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      if (/^### /.test(l)) { out.push('<h3>' + l.slice(4) + '</h3>'); continue; }
+      if (/^## /.test(l)) { out.push('<h3>' + l.slice(3) + '</h3>'); continue; }
+      if (/^# /.test(l)) { out.push('<h2>' + l.slice(2) + '</h2>'); continue; }
+      if (l === '---') { out.push('<hr style="border:none;border-top:1px solid var(--border);margin:20px 0">'); continue; }
+      if (/^[▌▎▏]/.test(l)) { out.push('<h3>' + l.replace(/^[▌▎▏]\s*/, '') + '</h3>'); continue; }
+      if (/^\d+\. /.test(l)) { out.push('<li>' + l.replace(/^\d+\. /, '') + '</li>'); continue; }
+      if (l === '') { out.push('<br>'); continue; }
+      out.push('<p>' + l + '</p>');
+    }
+  }
+  flushTable();
+
+  // Wrap consecutive <li> into <ul>
+  return out.join('\n')
+    .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>');
 }
 
 function extractScore(text) {
