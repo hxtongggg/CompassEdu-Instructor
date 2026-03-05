@@ -696,8 +696,8 @@ async function buildUserContent(traineeFile, traineeName, onStep) {
 }
 
 // ── Gemini helpers ────────────────────────────────────
-const GEMINI_PRIMARY = 'gemini-2.0-pro-exp';
-const GEMINI_FALLBACK = 'gemini-2.0-flash';
+const GEMINI_PRIMARY = 'gemini-2.5-flash-preview-05-20';
+const GEMINI_FALLBACK = 'gemini-2.0-flash-lite';
 
 // Convert Anthropic-style content blocks → Gemini parts
 function toGeminiParts(contentBlocks) {
