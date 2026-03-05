@@ -6,33 +6,22 @@
 <title>作业批改系统 · 交付部门</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
-
   :root {
-    --ink: #1a1714;
-    --paper: #f5f0e8;
-    --paper-dark: #ede7d5;
-    --accent: #8b3a2a;
-    --accent-light: #c4614d;
-    --muted: #7a7268;
-    --border: #cec5b0;
-    --success: #2d6a4f;
-    --success-bg: #d8f3dc;
-    --error-bg: #fde8e4;
-    --shadow: 0 2px 20px rgba(26,23,20,0.08);
+    --ink: #1a1714; --paper: #f5f0e8; --paper-dark: #ede7d5;
+    --accent: #8b3a2a; --accent-light: #c4614d; --muted: #7a7268;
+    --border: #cec5b0; --success: #2d6a4f; --success-bg: #d8f3dc;
+    --error-bg: #fde8e4; --shadow: 0 2px 20px rgba(26,23,20,0.08);
     --shadow-hover: 0 8px 40px rgba(26,23,20,0.15);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans SC', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; line-height: 1.7; }
   body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(ellipse at 20% 50%, rgba(139,58,42,0.04) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(184,150,12,0.04) 0%, transparent 60%); pointer-events: none; z-index: 0; }
-  .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
-
+  .container { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
   header { text-align: center; margin-bottom: 56px; padding-bottom: 40px; border-bottom: 1px solid var(--border); position: relative; }
   header::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background: var(--accent); }
   .logo-mark { font-family: 'Noto Serif SC', serif; font-size: 11px; letter-spacing: 0.4em; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; display: block; }
   h1 { font-family: 'Noto Serif SC', serif; font-size: clamp(26px, 4vw, 36px); font-weight: 500; color: var(--ink); line-height: 1.3; margin-bottom: 12px; }
   .subtitle { color: var(--muted); font-size: 14px; font-weight: 300; }
-
   .api-section { background: var(--paper-dark); border: 1px solid var(--border); border-radius: 4px; padding: 24px 28px; margin-bottom: 32px; }
   .api-section-label { font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; font-weight: 500; }
   .api-row { display: flex; gap: 10px; align-items: center; }
@@ -42,70 +31,97 @@
   .api-toggle { font-size: 11px; padding: 10px 16px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); cursor: pointer; font-family: 'DM Mono', monospace; transition: all 0.2s; white-space: nowrap; }
   .api-toggle:hover { border-color: var(--accent); color: var(--accent); }
   .api-hint { margin-top: 8px; font-size: 12px; color: var(--muted); font-weight: 300; }
-
   .card { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
   .card:hover { box-shadow: var(--shadow-hover); }
   .card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--paper-dark); }
   .card-number { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; font-weight: 500; }
   .card-title { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; color: var(--ink); }
   .card-desc { font-size: 13px; color: var(--muted); margin-top: 2px; font-weight: 300; }
-
+  .type-selector { display: flex; gap: 10px; }
+  .type-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 3px; background: var(--paper); color: var(--muted); font-size: 14px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .type-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 500; }
+  /* Mode toggle */
+  .mode-toggle { display: flex; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--paper-dark); }
+  .mode-btn { flex: 1; padding: 9px; border: 1.5px solid var(--border); border-radius: 3px; background: var(--paper); color: var(--muted); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .mode-btn.active { border-color: var(--accent); background: #fff5f3; color: var(--accent); font-weight: 500; }
+  /* Upload panels */
   .upload-panel { display: none; }
   .upload-panel.active { display: block; }
   .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 600px) { .upload-grid { grid-template-columns: 1fr; } }
-
   .upload-zone { border: 1.5px dashed var(--border); border-radius: 4px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: var(--paper); }
   .upload-zone:hover { border-color: var(--accent-light); background: #fdf8f4; }
   .upload-zone.has-file { border-color: var(--success); background: var(--success-bg); border-style: solid; }
   .upload-zone.dragover { border-color: var(--accent); background: #fdf0ec; transform: scale(1.01); }
   .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-
-  .upload-zone-multi { border: 1.5px dashed var(--border); border-radius: 4px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: var(--paper); grid-column: 1 / -1; }
-  .upload-zone-multi:hover { border-color: var(--accent-light); background: #fdf8f4; }
-  .upload-zone-multi.has-file { border-color: var(--success); border-style: solid; }
-  .upload-zone-multi.dragover { border-color: var(--accent); background: #fdf0ec; }
-  .upload-zone-multi input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-
-  .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; transition: transform 0.2s; }
-  .upload-zone:hover .upload-icon, .upload-zone-multi:hover .upload-icon { transform: translateY(-2px); }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; }
   .upload-label { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; display: block; }
   .upload-format { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
   .upload-filename { font-size: 12px; color: var(--success); margin-top: 6px; display: block; font-weight: 500; word-break: break-all; }
-
-  .multi-file-list { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
-  .multi-file-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--success-bg); color: var(--success); border: 1px solid #a8d5b5; border-radius: 20px; padding: 3px 10px 3px 8px; font-size: 12px; font-weight: 500; }
-  .multi-file-tag button { background: none; border: none; cursor: pointer; color: var(--success); font-size: 14px; line-height: 1; padding: 0; opacity: 0.7; transition: opacity 0.15s; }
-  .multi-file-tag button:hover { opacity: 1; }
-  .multi-add-more { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--accent); text-decoration: underline; cursor: pointer; }
-
-  .type-selector { display: flex; gap: 10px; }
-  .type-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 3px; background: var(--paper); color: var(--muted); font-size: 14px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; text-align: center; }
-  .type-btn:hover { border-color: var(--accent-light); color: var(--ink); }
-  .type-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 500; }
-
-  .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
-  .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
-  .check-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
-  .check-item.done .check-dot { background: var(--success); }
-  .check-item.done { color: var(--success); }
-
+  .module-group { border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 20px; background: var(--paper); }
+  .module-title { font-family: 'Noto Serif SC', serif; font-size: 14px; font-weight: 500; color: var(--accent); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--paper-dark); display: flex; align-items: center; gap: 8px; }
+  .module-title::before { content: ''; display: inline-block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
+  .upload-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .upload-grid-3 { grid-template-columns: 1fr; } }
+  .upload-zone-sm { border: 1.5px dashed var(--border); border-radius: 4px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: #fff; }
+  .upload-zone-sm:hover { border-color: var(--accent-light); background: #fdf8f4; }
+  .upload-zone-sm.has-file { border-color: var(--success); background: var(--success-bg); border-style: solid; }
+  .upload-zone-sm.dragover { border-color: var(--accent); background: #fdf0ec; }
+  .upload-zone-sm input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon-sm { font-size: 20px; margin-bottom: 6px; display: block; }
+  .upload-label-sm { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 3px; display: block; }
+  .upload-role { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--muted); letter-spacing: 0.05em; display: block; margin-bottom: 2px; }
+  .upload-filename-sm { font-size: 11px; color: var(--success); margin-top: 4px; display: block; font-weight: 500; word-break: break-all; }
+  /* Batch mode – trainee list */
+  .batch-common-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; padding: 12px 16px; background: var(--paper-dark); border-radius: 3px; border-left: 3px solid var(--accent); }
+  .trainee-list { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .trainee-row { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; position: relative; }
+  .trainee-row.graded { border-color: var(--success); background: var(--success-bg); }
+  .trainee-row.grading { border-color: var(--accent-light); background: #fff8f6; }
+  .trainee-row.error { border-color: #e57373; background: var(--error-bg); }
+  .trainee-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); min-width: 24px; font-weight: 500; }
+  .trainee-name-input { font-family: 'Noto Sans SC', sans-serif; font-size: 14px; padding: 7px 12px; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--ink); outline: none; width: 140px; transition: border-color 0.2s; }
+  .trainee-name-input:focus { border-color: var(--accent); }
+  .trainee-name-input::placeholder { color: var(--muted); opacity: 0.6; }
+  .trainee-work-zone { flex: 1; border: 1.5px dashed var(--border); border-radius: 3px; padding: 8px 14px; cursor: pointer; position: relative; background: #fff; transition: all 0.2s; display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trainee-work-zone:hover { border-color: var(--accent-light); }
+  .trainee-work-zone.has-file { border-color: var(--success); border-style: solid; background: var(--success-bg); }
+  .trainee-work-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .trainee-work-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .trainee-work-name { font-size: 12px; color: var(--success); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trainee-status { font-size: 12px; min-width: 60px; text-align: right; color: var(--muted); }
+  .trainee-status.done { color: var(--success); font-weight: 500; }
+  .trainee-status.running { color: var(--accent); }
+  .trainee-status.err { color: #c62828; }
+  .trainee-remove { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; padding: 0 4px; transition: color 0.15s; flex-shrink: 0; }
+  .trainee-remove:hover { color: var(--accent); }
+  .add-trainee-btn { display: flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1.5px dashed var(--accent-light); border-radius: 3px; background: transparent; color: var(--accent); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 8px; width: 100%; justify-content: center; }
+  .add-trainee-btn:hover { background: #fdf0ec; border-style: solid; }
+  /* Submit */
   .submit-area { text-align: center; margin-top: 32px; }
   .submit-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 48px; background: var(--accent); color: #fff; border: none; border-radius: 3px; font-size: 15px; font-family: 'Noto Serif SC', serif; font-weight: 500; cursor: pointer; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(139,58,42,0.25); }
   .submit-btn:hover { background: #7a3222; box-shadow: 0 6px 30px rgba(139,58,42,0.35); transform: translateY(-1px); }
-  .submit-btn:active { transform: translateY(0); }
   .submit-btn:disabled { background: var(--muted); box-shadow: none; cursor: not-allowed; transform: none; }
   .submit-hint { margin-top: 12px; font-size: 12px; color: var(--muted); font-weight: 300; }
-
+  .error-msg { background: var(--error-bg); border: 1px solid #f5c6be; border-radius: 4px; padding: 16px 20px; color: var(--accent); font-size: 13.5px; margin-top: 16px; display: none; }
+  .error-msg.visible { display: block; }
+  /* Progress bar (batch) */
+  .batch-progress { display: none; margin-top: 28px; }
+  .batch-progress.visible { display: block; }
+  .progress-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .progress-bar-bg { background: var(--paper-dark); border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+  /* Loading (single) */
   .loading-state { display: none; text-align: center; padding: 60px 24px; }
   .loading-state.visible { display: block; }
   .loading-spinner { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-family: 'Noto Serif SC', serif; font-size: 16px; color: var(--muted); }
   .loading-steps { margin-top: 16px; font-size: 13px; color: var(--muted); font-weight: 300; }
-
+  /* Result area */
   .result-section { display: none; margin-top: 40px; }
   .result-section.visible { display: block; }
+  /* Single result */
   .result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
   .result-title { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; }
   .score-badge { font-family: 'DM Mono', monospace; font-size: 32px; font-weight: 500; color: var(--accent); line-height: 1; }
@@ -121,22 +137,72 @@
   .result-content ul, .result-content ol { margin: 10px 0 10px 20px; }
   .result-content li { margin-bottom: 6px; }
   .result-content strong { color: var(--accent); font-weight: 600; }
-
-  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  /* Batch results */
+  .batch-result-list { display: flex; flex-direction: column; gap: 24px; }
+  .batch-result-card { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+  .batch-result-card-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: var(--paper-dark); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+  .batch-result-card-header:hover { background: #e8e2d0; }
+  .batch-card-name { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 500; }
+  .batch-card-score { font-family: 'DM Mono', monospace; font-size: 22px; color: var(--accent); font-weight: 500; }
+  .batch-card-score span { font-size: 12px; color: var(--muted); }
+  .batch-card-toggle { font-size: 12px; color: var(--muted); transition: transform 0.2s; }
+  .batch-card-body { padding: 24px; display: none; }
+  .batch-card-body.open { display: block; }
+  /* Per-card followup */
+  .card-followup { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+  .card-followup-label { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .card-followup-row { display: flex; gap: 8px; align-items: flex-end; }
+  .card-followup-input { flex: 1; font-family: 'Noto Sans SC', sans-serif; font-size: 13px; padding: 8px 12px; background: var(--paper); border: 1px solid var(--border); border-radius: 3px; color: var(--ink); outline: none; transition: border-color 0.2s; resize: none; min-height: 38px; max-height: 100px; line-height: 1.5; }
+  .card-followup-input:focus { border-color: var(--accent); }
+  .card-followup-input::placeholder { color: var(--muted); opacity: 0.6; }
+  .card-followup-btn { padding: 8px 16px; background: var(--accent); color: #fff; border: none; border-radius: 3px; font-size: 12px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .card-followup-btn:hover { background: #7a3222; }
+  .card-followup-btn:disabled { background: var(--muted); cursor: not-allowed; }
+  .card-chat-history { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+  /* Batch summary table */
+  .batch-summary { margin-top: 32px; padding: 24px; background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--shadow); }
+  .batch-summary-title { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--paper-dark); }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary-table th { background: var(--paper-dark); padding: 10px 14px; text-align: left; font-weight: 500; font-size: 12px; border: 1px solid var(--border); letter-spacing: 0.05em; }
+  .summary-table td { padding: 10px 14px; border: 1px solid var(--border); }
+  .summary-table tr:nth-child(even) td { background: var(--paper); }
+  .summary-table .score-cell { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
+  .summary-table .avg-row td { background: var(--paper-dark); font-weight: 600; }
+  /* Follow-up */
+  .followup-section { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .followup-label { font-size: 12px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; font-weight: 500; }
+  .followup-row { display: flex; gap: 10px; align-items: flex-end; }
+  .followup-input { flex: 1; font-family: 'Noto Sans SC', sans-serif; font-size: 14px; padding: 10px 14px; background: var(--paper); border: 1px solid var(--border); border-radius: 3px; color: var(--ink); outline: none; transition: border-color 0.2s; resize: none; min-height: 44px; max-height: 120px; line-height: 1.5; }
+  .followup-input:focus { border-color: var(--accent); }
+  .followup-btn { padding: 10px 20px; background: var(--accent); color: #fff; border: none; border-radius: 3px; font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+  .followup-btn:hover { background: #7a3222; }
+  .followup-btn:disabled { background: var(--muted); cursor: not-allowed; }
+  .chat-history { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .chat-bubble { border-radius: 4px; padding: 14px 18px; font-size: 14px; line-height: 1.7; }
+  .chat-bubble.user { background: var(--paper-dark); border-left: 3px solid var(--accent); }
+  .chat-bubble.assistant { background: #fff; border: 1px solid var(--border); }
+  .chat-bubble.assistant table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .chat-bubble.assistant th { background: var(--paper-dark); padding: 8px 10px; text-align: left; font-weight: 500; font-size: 12px; border: 1px solid var(--border); }
+  .chat-bubble.assistant td { padding: 8px 10px; border: 1px solid var(--border); vertical-align: top; }
+  .chat-bubble.assistant strong { color: var(--accent); font-weight: 600; }
+  .chat-bubble-role { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; }
+  .chat-loading { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; padding: 10px 0; }
+  .chat-spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); flex-wrap: wrap; }
   .btn-secondary { padding: 10px 24px; border: 1.5px solid var(--border); border-radius: 3px; background: transparent; color: var(--ink); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
   .btn-copy { padding: 10px 24px; border: 1.5px solid var(--accent); border-radius: 3px; background: transparent; color: var(--accent); font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; transition: all 0.2s; }
   .btn-copy:hover { background: var(--accent); color: #fff; }
-
-  .error-msg { background: var(--error-bg); border: 1px solid #f5c6be; border-radius: 4px; padding: 16px 20px; color: var(--accent); font-size: 13.5px; margin-top: 16px; display: none; }
-  .error-msg.visible { display: block; }
-
   footer { text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); font-weight: 300; letter-spacing: 0.05em; }
+  .checklist-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 16px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .check-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
+  .check-item.done .check-dot { background: var(--success); }
+  .check-item.done { color: var(--success); }
 </style>
 </head>
 <body>
 <div class="container">
-
   <header>
     <span class="logo-mark">交付部门 · 内部系统</span>
     <h1>翻译作业批改系统</h1>
@@ -146,131 +212,258 @@
   <div class="api-section">
     <div class="api-section-label">API 密钥配置</div>
     <div class="api-row">
-      <input type="password" class="api-input" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
+      <input type="password" class="api-input" id="apiKey" placeholder="AIza..." autocomplete="off">
       <button class="api-toggle" onclick="toggleApiKey()">显示</button>
     </div>
-    <p class="api-hint">填入 Anthropic API Key，仅在本地浏览器中使用，不会上传或存储</p>
+    <p class="api-hint">填入 Google Gemini API Key，仅在本地浏览器中使用，不会上传或存储 · 当前模型：<span id="modelIndicator" style="font-family:'DM Mono',monospace;color:var(--accent)">—</span></p>
   </div>
 
+  <!-- 01 作业类型 + 批改模式 -->
   <div class="card">
     <div class="card-header">
       <span class="card-number">01</span>
       <div>
-        <div class="card-title">作业类型</div>
-        <div class="card-desc">选择本次批改的翻译类型，上传区域会自动切换</div>
+        <div class="card-title">作业类型 &amp; 批改模式</div>
+        <div class="card-desc">选择翻译类型，以及单人或批量批改</div>
       </div>
     </div>
     <div class="type-selector">
-      <button class="type-btn active" onclick="selectType('成绩单翻译', this)">📋 成绩单翻译</button>
-      <button class="type-btn" onclick="selectType('证书翻译', this)">📜 证书翻译</button>
+      <button class="type-btn active" onclick="selectType('学术材料翻译', this)">📋 学术材料翻译</button>
+      <button class="type-btn" onclick="selectType('证书实习翻译', this)">📜 证书实习翻译</button>
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="selectMode('single', this)">👤 单人批改</button>
+      <button class="mode-btn" onclick="selectMode('batch', this)">👥 批量批改（多名新人）</button>
     </div>
   </div>
 
+  <!-- 02 公共材料（原始+参考答案） -->
   <div class="card">
     <div class="card-header">
       <span class="card-number">02</span>
       <div>
-        <div class="card-title">上传材料</div>
-        <div class="card-desc" id="uploadDesc">请上传全部四份材料，缺一不可</div>
+        <div class="card-title">公共材料</div>
+        <div class="card-desc" id="commonDesc">原始材料 + 参考答案（所有新人共用）</div>
       </div>
     </div>
-
-    <!-- 成绩单 panel -->
-    <div class="upload-panel active" id="panel-transcript">
-      <div class="upload-grid">
-        <div class="upload-zone" id="zone-t-original" ondrop="handleDrop(event,'t-original')" ondragover="handleDragover(event,'t-original')" ondragleave="handleDragleave('t-original')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-original')">
-          <span class="upload-icon">📄</span>
-          <span class="upload-label">原始中文成绩单</span>
-          <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-t-original"></span>
-        </div>
-        <div class="upload-zone" id="zone-t-answer" ondrop="handleDrop(event,'t-answer')" ondragover="handleDragover(event,'t-answer')" ondragleave="handleDragleave('t-answer')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-answer')">
-          <span class="upload-icon">✅</span>
-          <span class="upload-label">参考答案（仅供参考）</span>
-          <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-t-answer"></span>
-        </div>
-        <div class="upload-zone" id="zone-t-excel" ondrop="handleDrop(event,'t-excel')" ondragover="handleDragover(event,'t-excel')" ondragleave="handleDragleave('t-excel')">
-          <input type="file" accept=".xlsx,.xls,.csv" onchange="handleFile(event,'t-excel')">
-          <span class="upload-icon">📊</span>
-          <span class="upload-label">新人作业 · Excel</span>
-          <span class="upload-format">XLSX / XLS / CSV</span>
-          <span class="upload-filename" id="fn-t-excel"></span>
-        </div>
-        <div class="upload-zone" id="zone-t-work" ondrop="handleDrop(event,'t-work')" ondragover="handleDragover(event,'t-work')" ondragleave="handleDragleave('t-work')">
-          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'t-work')">
-          <span class="upload-icon">📑</span>
-          <span class="upload-label">新人作业 · PDF</span>
-          <span class="upload-format">PDF / 图片</span>
-          <span class="upload-filename" id="fn-t-work"></span>
+    <!-- 学术材料 公共区（原始+参考答案，无新人作业） -->
+    <div class="upload-panel active" id="common-panel-transcript">
+      <div class="module-group">
+        <div class="module-title">🎓 毕业证 · 学位证</div>
+        <div class="upload-grid-3" style="grid-template-columns:1fr 1fr">
+          <div class="upload-zone-sm" id="zone-deg-orig" ondrop="handleDropSm(event,'deg-orig')" ondragover="handleDragoverSm(event,'deg-orig')" ondragleave="handleDragleaveSm('deg-orig')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'deg-orig')">
+            <span class="upload-icon-sm">📄</span><span class="upload-role">原始材料</span>
+            <span class="upload-label-sm">毕业证学位证</span>
+            <span class="upload-filename-sm" id="fn-deg-orig"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-deg-ans" ondrop="handleDropSm(event,'deg-ans')" ondragover="handleDragoverSm(event,'deg-ans')" ondragleave="handleDragleaveSm('deg-ans')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'deg-ans')">
+            <span class="upload-icon-sm">✅</span><span class="upload-role">参考答案</span>
+            <span class="upload-label-sm">毕业证学位证</span>
+            <span class="upload-filename-sm" id="fn-deg-ans"></span>
+          </div>
         </div>
       </div>
-      <div class="checklist">
-        <div class="check-item" id="check-t-original"><span class="check-dot"></span>原始中文成绩单</div>
-        <div class="check-item" id="check-t-answer"><span class="check-dot"></span>参考答案</div>
-        <div class="check-item" id="check-t-excel"><span class="check-dot"></span>新人作业 Excel</div>
-        <div class="check-item" id="check-t-work"><span class="check-dot"></span>新人作业 PDF</div>
+      <div class="module-group">
+        <div class="module-title">📄 成绩单</div>
+        <div class="upload-grid-3" style="grid-template-columns:1fr 1fr">
+          <div class="upload-zone-sm" id="zone-trans-orig" ondrop="handleDropSm(event,'trans-orig')" ondragover="handleDragoverSm(event,'trans-orig')" ondragleave="handleDragleaveSm('trans-orig')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'trans-orig')">
+            <span class="upload-icon-sm">📄</span><span class="upload-role">原始材料</span>
+            <span class="upload-label-sm">成绩单</span>
+            <span class="upload-filename-sm" id="fn-trans-orig"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-trans-ans" ondrop="handleDropSm(event,'trans-ans')" ondragover="handleDragoverSm(event,'trans-ans')" ondragleave="handleDragleaveSm('trans-ans')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'trans-ans')">
+            <span class="upload-icon-sm">✅</span><span class="upload-role">参考答案</span>
+            <span class="upload-label-sm">成绩单</span>
+            <span class="upload-filename-sm" id="fn-trans-ans"></span>
+          </div>
+        </div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">📊 均分与排名证明</div>
+        <div class="upload-grid-3" style="grid-template-columns:1fr 1fr">
+          <div class="upload-zone-sm" id="zone-gpa-orig" ondrop="handleDropSm(event,'gpa-orig')" ondragover="handleDragoverSm(event,'gpa-orig')" ondragleave="handleDragleaveSm('gpa-orig')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'gpa-orig')">
+            <span class="upload-icon-sm">📄</span><span class="upload-role">原始材料</span>
+            <span class="upload-label-sm">均分与排名证明</span>
+            <span class="upload-filename-sm" id="fn-gpa-orig"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-gpa-ans" ondrop="handleDropSm(event,'gpa-ans')" ondragover="handleDragoverSm(event,'gpa-ans')" ondragleave="handleDragleaveSm('gpa-ans')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'gpa-ans')">
+            <span class="upload-icon-sm">✅</span><span class="upload-role">参考答案</span>
+            <span class="upload-label-sm">均分与排名证明</span>
+            <span class="upload-filename-sm" id="fn-gpa-ans"></span>
+          </div>
+        </div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">📋 在读证明</div>
+        <div class="upload-grid-3" style="grid-template-columns:1fr 1fr">
+          <div class="upload-zone-sm" id="zone-enroll-orig" ondrop="handleDropSm(event,'enroll-orig')" ondragover="handleDragoverSm(event,'enroll-orig')" ondragleave="handleDragleaveSm('enroll-orig')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'enroll-orig')">
+            <span class="upload-icon-sm">📄</span><span class="upload-role">原始材料</span>
+            <span class="upload-label-sm">在读证明</span>
+            <span class="upload-filename-sm" id="fn-enroll-orig"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-enroll-ans" ondrop="handleDropSm(event,'enroll-ans')" ondragover="handleDragoverSm(event,'enroll-ans')" ondragleave="handleDragleaveSm('enroll-ans')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'enroll-ans')">
+            <span class="upload-icon-sm">✅</span><span class="upload-role">参考答案</span>
+            <span class="upload-label-sm">在读证明</span>
+            <span class="upload-filename-sm" id="fn-enroll-ans"></span>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- 证书 panel -->
-    <div class="upload-panel" id="panel-cert">
+    <!-- 证书实习 公共区 -->
+    <div class="upload-panel" id="common-panel-cert">
       <div class="upload-grid">
-        <div class="upload-zone-multi" id="zone-c-originals" ondrop="handleDropMulti(event)" ondragover="handleDragoverMulti(event)" ondragleave="handleDragleaveMulti()">
-          <input type="file" accept=".pdf,image/*" multiple onchange="handleMultiFile(event)" id="input-c-originals">
+        <div class="upload-zone" id="zone-c-originals" ondrop="handleDrop(event,'c-originals')" ondragover="handleDragover(event,'c-originals')" ondragleave="handleDragleave('c-originals')">
+          <input type="file" accept=".pdf,image/*" onchange="handleFile(event,'c-originals')">
           <span class="upload-icon">📂</span>
-          <span class="upload-label">原始中文证书（支持多选，最多10份）</span>
-          <span class="upload-format">PDF / 图片 · 可同时选中多个文件或分批添加</span>
-          <div class="multi-file-list" id="multi-file-list"></div>
+          <span class="upload-label">原始材料</span>
+          <span class="upload-format">PDF（荣誉科研证书 + 实习证明）</span>
+          <span class="upload-filename" id="fn-c-originals"></span>
         </div>
         <div class="upload-zone" id="zone-c-answer" ondrop="handleDrop(event,'c-answer')" ondragover="handleDragover(event,'c-answer')" ondragleave="handleDragleave('c-answer')">
           <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'c-answer')">
           <span class="upload-icon">✅</span>
           <span class="upload-label">参考答案</span>
-          <span class="upload-format">PDF / Word / 图片</span>
+          <span class="upload-format">PDF / Word</span>
           <span class="upload-filename" id="fn-c-answer"></span>
         </div>
+        <div class="upload-zone" id="zone-c-cv" ondrop="handleDrop(event,'c-cv')" ondragover="handleDragover(event,'c-cv')" ondragleave="handleDragleave('c-cv')">
+          <input type="file" accept=".pdf,.doc,.docx" onchange="handleFile(event,'c-cv')">
+          <span class="upload-icon">👤</span>
+          <span class="upload-label">参考 CV</span>
+          <span class="upload-format">PDF / Word（用于筛选无关材料）</span>
+          <span class="upload-filename" id="fn-c-cv"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 新人作业（单人/批量切换） -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-number">03</span>
+      <div>
+        <div class="card-title" id="step3Title">新人作业</div>
+        <div class="card-desc" id="step3Desc">上传待批改的新人作业 PDF</div>
+      </div>
+    </div>
+
+    <!-- 单人模式：学术 -->
+    <div id="single-acad-work" class="upload-panel active">
+      <div class="module-group">
+        <div class="module-title">新人作业文件（4个模块）</div>
+        <div class="upload-grid-3" style="grid-template-columns:1fr 1fr">
+          <div class="upload-zone-sm" id="zone-deg-work" ondrop="handleDropSm(event,'deg-work')" ondragover="handleDragoverSm(event,'deg-work')" ondragleave="handleDragleaveSm('deg-work')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'deg-work')">
+            <span class="upload-icon-sm">📑</span><span class="upload-role">★ 批改对象</span>
+            <span class="upload-label-sm">毕业证学位证</span>
+            <span class="upload-filename-sm" id="fn-deg-work"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-trans-work" ondrop="handleDropSm(event,'trans-work')" ondragover="handleDragoverSm(event,'trans-work')" ondragleave="handleDragleaveSm('trans-work')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'trans-work')">
+            <span class="upload-icon-sm">📑</span><span class="upload-role">★ 批改对象</span>
+            <span class="upload-label-sm">成绩单</span>
+            <span class="upload-filename-sm" id="fn-trans-work"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-gpa-work" ondrop="handleDropSm(event,'gpa-work')" ondragover="handleDragoverSm(event,'gpa-work')" ondragleave="handleDragleaveSm('gpa-work')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'gpa-work')">
+            <span class="upload-icon-sm">📑</span><span class="upload-role">★ 批改对象</span>
+            <span class="upload-label-sm">均分与排名证明</span>
+            <span class="upload-filename-sm" id="fn-gpa-work"></span>
+          </div>
+          <div class="upload-zone-sm" id="zone-enroll-work" ondrop="handleDropSm(event,'enroll-work')" ondragover="handleDragoverSm(event,'enroll-work')" ondragleave="handleDragleaveSm('enroll-work')">
+            <input type="file" accept=".pdf,image/*" onchange="handleFileSm(event,'enroll-work')">
+            <span class="upload-icon-sm">📑</span><span class="upload-role">★ 批改对象</span>
+            <span class="upload-label-sm">在读证明</span>
+            <span class="upload-filename-sm" id="fn-enroll-work"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 单人模式：证书 -->
+    <div id="single-cert-work" class="upload-panel">
+      <div class="upload-grid" style="grid-template-columns:1fr">
         <div class="upload-zone" id="zone-c-work" ondrop="handleDrop(event,'c-work')" ondragover="handleDragover(event,'c-work')" ondragleave="handleDragleave('c-work')">
           <input type="file" accept=".pdf,.doc,.docx,image/*" onchange="handleFile(event,'c-work')">
           <span class="upload-icon">📑</span>
-          <span class="upload-label">新人作业</span>
-          <span class="upload-format">PDF / Word / 图片</span>
+          <span class="upload-label">新人作业（★ 批改对象）</span>
+          <span class="upload-format">PDF / Word</span>
           <span class="upload-filename" id="fn-c-work"></span>
         </div>
       </div>
-      <div class="checklist">
-        <div class="check-item" id="check-c-originals"><span class="check-dot"></span>原始中文证书</div>
-        <div class="check-item" id="check-c-answer"><span class="check-dot"></span>参考答案</div>
-        <div class="check-item" id="check-c-work"><span class="check-dot"></span>新人作业</div>
+    </div>
+
+    <!-- 批量模式：新人列表 -->
+    <div id="batch-work-panel" class="upload-panel">
+      <div class="batch-common-desc" id="batchWorkDesc">
+        为每位新人填写姓名并上传其作业 PDF（学术材料：每人一份合并PDF；证书实习：每人一份）
       </div>
+      <div class="trainee-list" id="traineeList"></div>
+      <button class="add-trainee-btn" onclick="addTrainee()">＋ 添加新人</button>
     </div>
   </div>
 
   <div class="submit-area">
     <button class="submit-btn" id="submitBtn" onclick="startGrading()">
-      <span>开始批改</span><span>→</span>
+      <span id="submitBtnText">开始批改</span><span>→</span>
     </button>
-    <p class="submit-hint">批改过程约需 30–90 秒，证书数量越多时间越长，请耐心等待</p>
+    <p class="submit-hint" id="submitHint">批改过程约需 30–90 秒，请耐心等待</p>
   </div>
 
   <div class="error-msg" id="errorMsg"></div>
 
+  <!-- 批量进度条 -->
+  <div class="batch-progress" id="batchProgress">
+    <div class="progress-label" id="progressLabel">正在批改…</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- 单人 loading -->
   <div class="loading-state" id="loadingState">
     <div class="loading-spinner"></div>
     <p class="loading-text">AI 导师正在批改中</p>
     <p class="loading-steps" id="loadingStep">正在读取材料内容…</p>
   </div>
 
+  <!-- 结果区 -->
   <div class="result-section" id="resultSection">
-    <div class="result-header">
-      <div class="result-title">批改报告</div>
-      <div class="score-badge" id="scoreBadge">—<span>/ 100</span></div>
+    <!-- 单人结果 -->
+    <div id="singleResultArea">
+      <div class="result-header">
+        <div class="result-title">批改报告</div>
+        <div class="score-badge" id="scoreBadge">—<span>/ 100</span></div>
+      </div>
+      <div class="result-content" id="resultContent"></div>
+      <div class="followup-section">
+        <div class="followup-label">继续追问</div>
+        <div class="chat-history" id="chatHistory"></div>
+        <div class="followup-row" style="margin-top:12px">
+          <textarea class="followup-input" id="followupInput" placeholder="对报告有疑问？可以继续追问 AI 导师…" rows="1" onkeydown="handleFollowupKey(event)"></textarea>
+          <button class="followup-btn" id="followupBtn" onclick="sendFollowup()">发送</button>
+        </div>
+      </div>
     </div>
-    <div class="result-content" id="resultContent"></div>
+    <!-- 批量结果 -->
+    <div id="batchResultArea" style="display:none">
+      <div class="batch-summary" id="batchSummary" style="display:none">
+        <div class="batch-summary-title">📊 批量批改汇总</div>
+        <table class="summary-table" id="summaryTable">
+          <thead><tr><th>姓名</th><th>得分</th><th>状态</th></tr></thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+      <div class="batch-result-list" id="batchResultList" style="margin-top:24px"></div>
+    </div>
     <div class="result-actions">
-      <button class="btn-copy" onclick="copyResult()">复制报告</button>
+      <button class="btn-copy" id="copyBtn" onclick="copyResult()" style="display:none">复制报告</button>
       <button class="btn-secondary" onclick="resetForm()">批改新作业</button>
     </div>
   </div>
@@ -279,62 +472,143 @@
 </div>
 
 <script>
-const files = { 't-original': null, 't-answer': null, 't-excel': null, 't-work': null, 'c-answer': null, 'c-work': null };
-let certOriginals = [];
-let jobType = '成绩单翻译';
+// ── State ──────────────────────────────────────────────
+const files = {
+  'deg-orig': null, 'deg-ans': null, 'deg-work': null,
+  'trans-orig': null, 'trans-ans': null, 'trans-work': null,
+  'gpa-orig': null, 'gpa-ans': null, 'gpa-work': null,
+  'enroll-orig': null, 'enroll-ans': null, 'enroll-work': null,
+  'c-originals': null, 'c-answer': null, 'c-cv': null, 'c-work': null
+};
+let jobType = '学术材料翻译';
+let gradeMode = 'single'; // 'single' | 'batch'
 let resultText = '';
+let conversationHistory = [];
+let firstUserContent = null;
+// batch state
+let trainees = []; // [{name, file, status, score, report}]
+let traineeCounter = 0;
+// cached common content blocks (base64 encoded, reused across trainees)
+let cachedCommonContent = null;
 
-// ── Type selector ──────────────────────────────────────
+// ── Type & Mode selectors ──────────────────────────────
 function selectType(type, btn) {
   jobType = type;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('panel-transcript').classList.toggle('active', type === '成绩单翻译');
-  document.getElementById('panel-cert').classList.toggle('active', type === '证书翻译');
-  document.getElementById('uploadDesc').textContent =
-    type === '成绩单翻译' ? '请上传全部四份材料，缺一不可' : '请上传原始证书（可多份）、参考答案和新人作业';
+  const isAcad = type === '学术材料翻译';
+  document.getElementById('common-panel-transcript').classList.toggle('active', isAcad);
+  document.getElementById('common-panel-cert').classList.toggle('active', !isAcad);
+  updateStep3Panel();
+  cachedCommonContent = null; // reset cache when type changes
+}
+
+function selectMode(mode, btn) {
+  gradeMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateStep3Panel();
+  // Update submit button text
+  document.getElementById('submitBtnText').textContent = mode === 'batch' ? '开始批量批改' : '开始批改';
+  document.getElementById('submitHint').textContent = mode === 'batch'
+    ? '将依次批改每位新人作业，完成后实时显示结果' : '批改过程约需 30–90 秒，请耐心等待';
+}
+
+function updateStep3Panel() {
+  const isBatch = gradeMode === 'batch';
+  const isAcad = jobType === '学术材料翻译';
+  document.getElementById('single-acad-work').classList.toggle('active', !isBatch && isAcad);
+  document.getElementById('single-cert-work').classList.toggle('active', !isBatch && !isAcad);
+  document.getElementById('batch-work-panel').classList.toggle('active', isBatch);
+  document.getElementById('step3Title').textContent = isBatch ? '新人列表' : '新人作业';
+  document.getElementById('step3Desc').textContent = isBatch
+    ? '为每位新人填写姓名并上传作业 PDF（所有人共用上方公共材料）'
+    : '上传待批改的新人作业 PDF';
+  const desc = isBatch ? '公共材料（原始材料 + 参考答案，所有新人共用）' : '原始材料 + 参考答案（仅本次使用）';
+  document.getElementById('commonDesc').textContent = desc;
 }
 
 function toggleApiKey() {
   const input = document.getElementById('apiKey');
-  const btn = event.target;
   input.type = input.type === 'password' ? 'text' : 'password';
-  btn.textContent = input.type === 'password' ? '显示' : '隐藏';
+  event.target.textContent = input.type === 'password' ? '显示' : '隐藏';
 }
 
-// ── Single file ────────────────────────────────────────
-function handleFile(event, key) { const file = event.target.files[0]; if (file) setFile(key, file); }
-function handleDrop(event, key) { event.preventDefault(); handleDragleave(key); const file = event.dataTransfer.files[0]; if (file) setFile(key, file); }
+// ── File handlers ──────────────────────────────────────
+function handleFile(event, key) { const f = event.target.files[0]; if (f) setFile(key, f); }
+function handleDrop(event, key) { event.preventDefault(); handleDragleave(key); const f = event.dataTransfer.files[0]; if (f) setFile(key, f); }
 function handleDragover(event, key) { event.preventDefault(); document.getElementById('zone-' + key).classList.add('dragover'); }
 function handleDragleave(key) { document.getElementById('zone-' + key).classList.remove('dragover'); }
 function setFile(key, file) {
-  files[key] = file;
+  files[key] = file; cachedCommonContent = null;
   document.getElementById('zone-' + key).classList.add('has-file');
   document.getElementById('fn-' + key).textContent = '✓ ' + file.name;
-  document.getElementById('check-' + key).classList.add('done');
+}
+function handleFileSm(event, key) { const f = event.target.files[0]; if (f) setFileSm(key, f); }
+function handleDropSm(event, key) { event.preventDefault(); handleDragleaveSm(key); const f = event.dataTransfer.files[0]; if (f) setFileSm(key, f); }
+function handleDragoverSm(event, key) { event.preventDefault(); document.getElementById('zone-' + key).classList.add('dragover'); }
+function handleDragleaveSm(key) { document.getElementById('zone-' + key).classList.remove('dragover'); }
+function setFileSm(key, file) {
+  files[key] = file; cachedCommonContent = null;
+  document.getElementById('zone-' + key).classList.add('has-file');
+  document.getElementById('fn-' + key).textContent = '✓ ' + file.name;
 }
 
-// ── Multi file ─────────────────────────────────────────
-function handleMultiFile(event) { addCertFiles(Array.from(event.target.files)); event.target.value = ''; }
-function handleDropMulti(event) { event.preventDefault(); handleDragleaveMulti(); addCertFiles(Array.from(event.dataTransfer.files).filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'))); }
-function handleDragoverMulti(event) { event.preventDefault(); document.getElementById('zone-c-originals').classList.add('dragover'); }
-function handleDragleaveMulti() { document.getElementById('zone-c-originals').classList.remove('dragover'); }
-function addCertFiles(newFiles) {
-  newFiles.forEach(f => { if (certOriginals.length >= 10) return; if (!certOriginals.find(e => e.name === f.name && e.size === f.size)) certOriginals.push(f); });
-  renderCertFileList();
-}
-function removeCertFile(index) { certOriginals.splice(index, 1); renderCertFileList(); }
-function renderCertFileList() {
-  const list = document.getElementById('multi-file-list');
-  const zone = document.getElementById('zone-c-originals');
-  const check = document.getElementById('check-c-originals');
-  if (certOriginals.length === 0) { list.innerHTML = ''; zone.classList.remove('has-file'); check.classList.remove('done'); return; }
-  zone.classList.add('has-file'); check.classList.add('done');
-  list.innerHTML = certOriginals.map((f, i) => `<span class="multi-file-tag">📄 ${f.name}<button onclick="removeCertFile(${i})">×</button></span>`).join('') +
-    (certOriginals.length < 10 ? `<span class="multi-add-more" onclick="document.getElementById('input-c-originals').click()">+ 继续添加</span>` : '');
+// ── Trainee list (batch mode) ──────────────────────────
+function addTrainee() {
+  traineeCounter++;
+  const id = traineeCounter;
+  trainees.push({ id, name: '', file: null, status: 'pending', score: null, report: '' });
+  renderTraineeList();
 }
 
-// ── File → Base64 ──────────────────────────────────────
+function removeTrainee(id) {
+  trainees = trainees.filter(t => t.id !== id);
+  renderTraineeList();
+}
+
+function renderTraineeList() {
+  const list = document.getElementById('traineeList');
+  list.innerHTML = trainees.map((t, idx) => {
+    const statusHtml = t.status === 'done'
+      ? '<span class="trainee-status done">✓ ' + (t.score !== null ? t.score + '分' : '完成') + '</span>'
+      : t.status === 'running'
+      ? '<span class="trainee-status running">批改中…</span>'
+      : t.status === 'error'
+      ? '<span class="trainee-status err">失败</span>'
+      : '<span class="trainee-status"></span>';
+    const fileHtml = t.file
+      ? '<span class="trainee-work-name">✓ ' + t.file.name + '</span>'
+      : '<span class="trainee-work-label">📁 点击上传作业 PDF</span>';
+    const rowClass = t.status === 'done' ? ' graded' : t.status === 'running' ? ' grading' : t.status === 'error' ? ' error' : '';
+    return '<div class="trainee-row' + rowClass + '" id="trow-' + t.id + '">' +
+      '<span class="trainee-num">' + (idx + 1) + '</span>' +
+      '<input class="trainee-name-input" type="text" placeholder="新人姓名" value="' + t.name + '" oninput="updateTraineeName(' + t.id + ', this.value)">' +
+      '<div class="trainee-work-zone' + (t.file ? ' has-file' : '') + '" onclick="triggerTraineeUpload(' + t.id + ')"><input type="file" accept=".pdf,image/*,.doc,.docx" onchange="handleTraineeFile(' + t.id + ', this)" style="pointer-events:none">' + fileHtml + '</div>' +
+      statusHtml +
+      '<button class="trainee-remove" onclick="removeTrainee(' + t.id + ')">×</button>' +
+      '</div>';
+  }).join('');
+}
+
+function triggerTraineeUpload(id) {
+  const row = document.getElementById('trow-' + id);
+  row.querySelector('input[type=file]').click();
+}
+
+function updateTraineeName(id, val) {
+  const t = trainees.find(t => t.id === id);
+  if (t) t.name = val.trim();
+}
+
+function handleTraineeFile(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const t = trainees.find(t => t.id === id);
+  if (t) { t.file = file; renderTraineeList(); }
+}
+
+// ── Utilities ──────────────────────────────────────────
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -344,340 +618,441 @@ function fileToBase64(file) {
   });
 }
 
-function getGeminiMimeType(file) {
+function getMimeType(file) {
   if (file.type === 'application/pdf') return 'application/pdf';
   if (file.type.startsWith('image/')) return file.type;
-  if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) return 'application/pdf';
   return 'application/pdf';
 }
 
-// ── Build Anthropic document block ────────────────────
 async function buildPart(label, file) {
   const b64 = await fileToBase64(file);
-  const mimeType = getGeminiMimeType(file);
   return [
     { type: 'text', text: label },
-    { type: 'document', source: { type: 'base64', media_type: mimeType, data: b64 } }
+    { type: 'document', source: { type: 'base64', media_type: getMimeType(file), data: b64 } }
   ];
 }
 
-// ── Grading ────────────────────────────────────────────
+// ── Build common content blocks (cached) ──────────────
+async function buildCommonContent(onStep) {
+  if (cachedCommonContent) return cachedCommonContent;
+  const content = [];
+  if (jobType === '学术材料翻译') {
+    const modules = [
+      { id: 'deg', name: '毕业证 · 学位证' },
+      { id: 'trans', name: '成绩单' },
+      { id: 'gpa', name: '均分与排名证明' },
+      { id: 'enroll', name: '在读证明' }
+    ];
+    for (const m of modules) {
+      onStep('正在读取【' + m.name + '】公共材料…');
+      content.push(...await buildPart('━━━ 模块：' + m.name + ' ━━━\n【原始材料 · 仅作批改基准，非批改对象】', files[m.id + '-orig']));
+      content.push(...await buildPart('【参考答案 · 仅供参考，不作为扣分依据，非批改对象】', files[m.id + '-ans']));
+    }
+  } else {
+    onStep('正在读取原始材料…');
+    content.push(...await buildPart('【材料一：原始材料（荣誉科研证书 + 实习证明）】', files['c-originals']));
+    onStep('正在读取参考答案…');
+    content.push(...await buildPart('【材料二：参考答案】', files['c-answer']));
+    onStep('正在读取参考 CV…');
+    content.push(...await buildPart('【材料三：参考CV（客户英文简历，用于判断哪些材料需要翻译）】', files['c-cv']));
+  }
+  cachedCommonContent = content;
+  return content;
+}
+
+// ── Build full user content for one trainee ────────────
+async function buildUserContent(traineeFile, traineeName, onStep) {
+  const common = await buildCommonContent(onStep);
+  const userContent = [...common];
+
+  if (jobType === '学术材料翻译') {
+    const whoNote = traineeName ? '（新人：' + traineeName + '）' : '';
+    userContent.unshift({ type: 'text', text: '请批改以下【学术材料翻译】作业' + whoNote + '，共4个模块。所有模块的失分点统一汇总，给出一个最终总分（满分100分），不分模块计分。\n\n重要说明：\n- 标注【原始材料】的文件是客户提供的中文原件，是批改基准\n- 标注【参考答案】的文件仅供参考，不作为扣分依据\n- 标注【新人作业·批改对象】的文件才是需要批改的内容，请勿将其他文件误认为新人作业' });
+    onStep('正在读取' + (traineeName || '新人') + '的作业文件…');
+    const modules = [
+      { id: 'deg', name: '毕业证 · 学位证' },
+      { id: 'trans', name: '成绩单' },
+      { id: 'gpa', name: '均分与排名证明' },
+      { id: 'enroll', name: '在读证明' }
+    ];
+    // traineeFile is a single merged PDF for batch, or module files for single
+    if (gradeMode === 'batch') {
+      userContent.push(...await buildPart('\n【新人作业 · 批改对象，这是需要批改的内容】（包含4个模块，按模块顺序：毕业证学位证 / 成绩单 / 均分排名 / 在读证明）', traineeFile));
+    } else {
+      for (const m of modules) {
+        userContent.push(...await buildPart('━━━ 模块：' + m.name + ' ━━━\n【新人作业 · 批改对象，这是需要批改的内容】', files[m.id + '-work']));
+      }
+    }
+    userContent.push({ type: 'text', text: '请严格按以下格式输出：\n1. 按模块分组列出【逐项问题清单】，每个模块一组标题，组内列出该模块所有失分点（不单独给分）\n2. 统计【全部扣分合计】\n3. 输出【最终得分】= 100 - 全部扣分合计（最低0分）\n4. 输出【总结评语】【主要问题分析】【改进建议】【标点说明】' });
+  } else {
+    const whoNote = traineeName ? '（新人：' + traineeName + '）' : '';
+    userContent.unshift({ type: 'text', text: '请批改以下【证书实习翻译】作业' + whoNote + '。请先对照参考CV，判断原始材料中哪些与CV相关、哪些无关，再逐份批改新人作业。' });
+    onStep('正在读取' + (traineeName || '新人') + '的作业文件…');
+    const workFile = gradeMode === 'batch' ? traineeFile : files['c-work'];
+    userContent.push(...await buildPart('【新人作业（★ 批改对象）】', workFile));
+    userContent.push({ type: 'text', text: '请严格按系统格式输出批改报告。' });
+  }
+  return userContent;
+}
+
+// ── Gemini helpers ────────────────────────────────────
+const GEMINI_PRIMARY = 'gemini-2.0-pro-exp';
+const GEMINI_FALLBACK = 'gemini-2.0-flash';
+
+// Convert Anthropic-style content blocks → Gemini parts
+function toGeminiParts(contentBlocks) {
+  return contentBlocks.map(block => {
+    if (block.type === 'text') return { text: block.text };
+    if (block.type === 'document') {
+      return { inlineData: { mimeType: block.source.media_type, data: block.source.data } };
+    }
+    return { text: '' };
+  }).filter(p => p.text !== '' || p.inlineData);
+}
+
+// Convert conversation history to Gemini contents array
+function toGeminiContents(messages) {
+  return messages.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: Array.isArray(m.content)
+      ? toGeminiParts(m.content)
+      : [{ text: m.content }]
+  }));
+}
+
+async function callGeminiModel(model, geminiContents, apiKey) {
+  const systemPrompt = buildSystemPrompt();
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: geminiContents,
+    generationConfig: { maxOutputTokens: 8192 }
+  };
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    const msg = err.error?.message || 'HTTP ' + resp.status;
+    throw Object.assign(new Error(msg), { status: resp.status });
+  }
+  const data = await resp.json();
+  const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('\n');
+  if (!text) throw new Error('模型未返回内容，请重试');
+  return text;
+}
+
+function setModelIndicator(model) {
+  const el = document.getElementById('modelIndicator');
+  if (el) el.textContent = model;
+}
+
+// ── Call API for one trainee (with fallback) ──────────
+async function callGradingAPI(userContent, apiKey) {
+  const geminiContents = toGeminiContents([{ role: 'user', content: userContent }]);
+  // Try primary model first
+  try {
+    const text = await callGeminiModel(GEMINI_PRIMARY, geminiContents, apiKey);
+    setModelIndicator(GEMINI_PRIMARY);
+    return text;
+  } catch (err) {
+    // Fallback on rate limit (429), quota (403), or model unavailable (400/404)
+    const fallbackCodes = [400, 403, 404, 429, 500, 503];
+    if (!fallbackCodes.includes(err.status)) throw err;
+    console.warn('Primary model failed (' + err.message + '), falling back to ' + GEMINI_FALLBACK);
+    setLoadingStep('主模型不可用，切换至 ' + GEMINI_FALLBACK + '…');
+    const text = await callGeminiModel(GEMINI_FALLBACK, geminiContents, apiKey);
+    setModelIndicator(GEMINI_FALLBACK + ' (fallback)');
+    return text;
+  }
+}
+
+// ── Call API for followup (with history + fallback) ───
+async function callFollowupAPI(messages, apiKey) {
+  const geminiContents = toGeminiContents(messages);
+  try {
+    const text = await callGeminiModel(GEMINI_PRIMARY, geminiContents, apiKey);
+    setModelIndicator(GEMINI_PRIMARY);
+    return text;
+  } catch (err) {
+    const fallbackCodes = [400, 403, 404, 429, 500, 503];
+    if (!fallbackCodes.includes(err.status)) throw err;
+    const text = await callGeminiModel(GEMINI_FALLBACK, geminiContents, apiKey);
+    setModelIndicator(GEMINI_FALLBACK + ' (fallback)');
+    return text;
+  }
+}
+
+// ── Validation ─────────────────────────────────────────
+function validateCommonFiles() {
+  if (jobType === '学术材料翻译') {
+    for (const m of [{ id: 'deg', name: '毕业证学位证' }, { id: 'trans', name: '成绩单' }, { id: 'gpa', name: '均分与排名证明' }, { id: 'enroll', name: '在读证明' }]) {
+      if (!files[m.id + '-orig']) return '请上传【' + m.name + '】的原始材料';
+      if (!files[m.id + '-ans'])  return '请上传【' + m.name + '】的参考答案';
+    }
+  } else {
+    if (!files['c-originals']) return '请上传原始材料';
+    if (!files['c-answer'])    return '请上传参考答案';
+    if (!files['c-cv'])        return '请上传参考 CV';
+  }
+  return null;
+}
+
+// ── Start grading ──────────────────────────────────────
 async function startGrading() {
   const apiKey = document.getElementById('apiKey').value.trim();
-  if (!apiKey) return showError('请先填入 Gemini API Key（格式：sk-ant-api03-...）');
+  if (!apiKey) return showError('请先填入 API Key');
+  const commonErr = validateCommonFiles();
+  if (commonErr) return showError(commonErr);
+  hideError();
 
-  if (jobType === '成绩单翻译') {
-    if (!files['t-original']) return showError('请上传原始中文成绩单');
-    if (!files['t-answer'])   return showError('请上传参考答案');
-    if (!files['t-excel'])    return showError('请上传新人作业 Excel');
-    if (!files['t-work'])     return showError('请上传新人作业 PDF');
+  if (gradeMode === 'single') {
+    await startSingleGrading(apiKey);
   } else {
-    if (certOriginals.length === 0) return showError('请至少上传一份原始中文证书');
-    if (!files['c-answer'])         return showError('请上传参考答案');
-    if (!files['c-work'])           return showError('请上传新人作业');
+    await startBatchGrading(apiKey);
   }
+}
 
-  hideError(); showLoading();
-
+// ── Single mode ────────────────────────────────────────
+async function startSingleGrading(apiKey) {
+  if (jobType === '学术材料翻译') {
+    for (const m of [{ id: 'deg', name: '毕业证学位证' }, { id: 'trans', name: '成绩单' }, { id: 'gpa', name: '均分与排名证明' }, { id: 'enroll', name: '在读证明' }])
+      if (!files[m.id + '-work']) return showError('请上传【' + m.name + '】的新人作业');
+  } else {
+    if (!files['c-work']) return showError('请上传新人作业');
+  }
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('loadingState').classList.add('visible');
+  document.getElementById('resultSection').classList.remove('visible');
+  document.getElementById('singleResultArea').style.display = '';
+  document.getElementById('batchResultArea').style.display = 'none';
+  document.getElementById('copyBtn').style.display = '';
   try {
-    const userContent = [];
-
-    if (jobType === '成绩单翻译') {
-      userContent.push({ type: 'text', text: '请批改以下【成绩单翻译】作业。新人提交了Excel（翻译文字内容）和PDF（排版成品）两份，内容一致，请综合评估后合并给出一个总分。' });
-      setLoadingStep('正在读取原始成绩单…');
-      userContent.push(...await buildPart('【材料一：原始中文成绩单】', files['t-original']));
-      setLoadingStep('正在读取参考答案…');
-      userContent.push(...await buildPart('【材料二：参考答案（仅供参考，不作为扣分依据）】', files['t-answer']));
-      setLoadingStep('正在读取新人作业 PDF…');
-      userContent.push(...await buildPart('【材料三：新人作业（PDF排版版本）】', files['t-work']));
-      userContent.push({ type: 'text', text: `【材料四：新人作业Excel文件名】${files['t-excel'].name}\nExcel与PDF内容一致，排版以PDF为准，翻译内容综合两者判断。\n\n请严格按系统格式输出批改报告。` });
-    } else {
-      parts.push({ text: `请批改以下【证书翻译】作业。共有 ${certOriginals.length} 份原始证书。参考答案和新人作业的格式均为：原始证书截图在上，英文翻译在下。请逐份证书对照批改，最终合并出一个总分（满分100分）。` });
-      for (let i = 0; i < certOriginals.length; i++) {
-        setLoadingStep(`正在读取第 ${i+1} / ${certOriginals.length} 份原始证书…`);
-        userContent.push(...await buildPart(`【原始证书 ${i+1}：${certOriginals[i].name}】`, certOriginals[i]));
-      }
-      setLoadingStep('正在读取参考答案…');
-      userContent.push(...await buildPart('【参考答案（原件截图 + 英文翻译）】', files['c-answer']));
-      setLoadingStep('正在读取新人作业…');
-      userContent.push(...await buildPart('【新人作业（原件截图 + 英文翻译）】', files['c-work']));
-      userContent.push({ type: 'text', text: '请严格按系统格式输出批改报告。' });
-    }
-
+    const userContent = await buildUserContent(null, '', msg => setLoadingStep(msg));
     setLoadingStep('AI 导师正在逐项批改，请稍候…');
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-opus-4-5',
-        max_tokens: 4000,
-        system: buildSystemPrompt(),
-        messages: [{ role: 'user', content: userContent }]
-      })
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `API 请求失败 (${response.status})`);
-    }
-
-    const data = await response.json();
-    resultText = data.content.map(b => b.text || '').join('\n');
-    if (!resultText) throw new Error('AI 未返回内容，请重试');
-    showResult(resultText);
-
+    const text = await callGradingAPI(userContent, apiKey);
+    resultText = text;
+    firstUserContent = userContent;
+    conversationHistory = [{ role: 'assistant', content: text }];
+    document.getElementById('chatHistory').innerHTML = '';
+    document.getElementById('loadingState').classList.remove('visible');
+    document.getElementById('scoreBadge').innerHTML = extractScore(text) + '<span>/ 100</span>';
+    document.getElementById('resultContent').innerHTML = renderMarkdown(text);
+    document.getElementById('resultSection').classList.add('visible');
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
-    hideLoading();
+    document.getElementById('loadingState').classList.remove('visible');
     showError('批改失败：' + err.message);
   }
+  document.getElementById('submitBtn').disabled = false;
 }
 
-// ── System Prompt ──────────────────────────────────────
-function buildSystemPrompt() {
-  return `# 角色定位
-你是一位留学行业交付部门的资深导师，专门负责批改新入职员工的翻译作业。批改风格：严谨指出问题，同时具有教学引导性，帮助新人理解错误原因并掌握正确方法。所有输出使用中文。
-
----
-
-# 两种作业类型
-
-## 类型一：成绩单翻译
-提交材料共四份：
-1. 原始中文成绩单（图片型PDF）
-2. 参考答案（图片型PDF，仅供参考，不作为扣分依据）
-3. 新人作业 · Excel（翻译文字内容）
-4. 新人作业 · PDF（最终排版成品）
-
-Excel 与 PDF 内容一致，排版评估以 PDF 为准，翻译内容综合两者判断，合并出一个总分。
-
-## 类型二：证书翻译
-提交材料共三份：
-1. 原始中文证书（可能有多份，每份单独文件，3-10个）
-2. 参考答案（Word 或 PDF，格式为：原始证书截图在上，英文翻译在下）
-3. 新人作业（Word 或 PDF，格式为：原始证书截图在上，英文翻译在下）
-
-请逐份证书对照批改，最终合并出一个总分。
-
----
-
-# 批改前材料确认（每次必做）
-
-收到材料后，先确认是否齐全：
-
-成绩单翻译需确认：
-- [ ] 原始中文成绩单
-- [ ] 参考答案
-- [ ] 新人作业 Excel
-- [ ] 新人作业 PDF
-
-证书翻译需确认：
-- [ ] 原始中文证书（注明收到几份）
-- [ ] 参考答案
-- [ ] 新人作业
-
-如有缺失，告知新人补充哪项材料，不进行批改。
-
----
-
-# 批改维度（总分100分）
-
-## 1. 翻译准确性
-
-### 【成绩单翻译专用规则】
-
-**总体原则**
-批改基准为原始中文材料，参考答案仅供参考，不作为扣分依据。只要译文与原文语义准确一致，即使与参考答案表达不同，不扣分。
-
-**不扣分的情况（合理差异）**
-以下情况视为合理的同义表达，不扣分，但可在改进建议中提示参考答案的规范表达：
-- 同义词/近义词替换：语义准确即可，如 Method / Approach、Time / Date、Enrollment / Admission 等
-- 单复数差异：如 Application / Applications、Lecture / Lectures，只要不影响语义
-- 词序调整：如 Practice of Management Secretary / Management Secretary Practice，语义不变
-- 合理增减冠词、介词：不影响核心语义的情况
-- 课程名称的同义表达：只要准确传达原文含义即可
-- 院系、专业、学校名称：语义准确、无拼写错误即可，不强制对齐参考答案
-- 标题类文字：语义准确、无拼写错误即可
-- 术语的合理同义表达（以下均不扣分）：
-  * 必修：R / Required / Compulsory 均可接受
-  * 限选：L / Limited Elective / Restricted Elective 均可接受
-  * 专任或任选：E / Elective / Special Compulsory 均可接受
-
-**扣分的情况（每处独立语义单元出错扣1分）**
-- 信息错译：译文与原文语义不符
-- 信息漏译：原文有内容但译文完全省略，如课程副标题、班级编号、毕业论文题目副标题等
-- 拼写错误：无论是否造成语义改变，一律扣分。特别注意拼写错误导致语义改变的情况，如 Data≠Date、Metal≠Mental、Modem≠Modern
-- 数字错误：学分、分数、GPA、日期、编号等任何数字与原文不符
-- 无中生有增译：原文没有的内容被添加进译文
-
-**「核心错误」标注规则**
-以下情况一律标注「核心错误」（同样扣1分，但在报告中特别标注）：
-- 学生姓名翻译错误
-- 学校名称翻译错误
-- 所有数字错误（学分、分数、GPA、编号等）
-- 任何信息的错译（译文与原文语义不符）
-- 任何信息的漏译（原文内容在译文中完全缺失）
-- 拼写错误（无论是否造成语义改变）
-
-### 【证书翻译专用规则】
-
-批改前预判步骤（每份证书必做）：
-
-第一步：判断证书是否需要翻译
-- 若证书本身已为官方中英双语版本（证书上已印有完整英文内容）→ 该证书无需另行翻译，新人未提供译文属合理处理，不扣分
-- 若证书为纯中文版本 → 必须提供完整英文译文，缺失则扣分
-
-第二步：判断新人是否主动提交了译文
-- 官方双语证书 + 新人提交了译文 → 提醒该证书无需另行翻译，不扣分
-- 官方双语证书 + 新人未提交译文 → 合理处理，不扣分不评论
-
-须翻译/保留的字段范围（纯中文证书适用）：
-- 证书标题、姓名、学校名称、奖项名称及等级、颁奖原因/正文描述、指导老师姓名（如有）、颁发机构、日期
-- 证书编号、身份证号、准考证号及其他所有编号类字段（原样保留，无需翻译）
-- 结语类套话（如"特发此证，以资鼓励""特授予此证"等）不作为必译字段，漏译不扣分
-
-专利证书须额外体现：
-- 证书号、专利名称（严格对应原文不得意译）、发明人、专利申请号、专利申请日、专利权人、地址、授权公告日、授权公告号（编号类原样保留）
-
-多人署名材料处理规范（专利/论文/竞赛等）：
-- 方式A：列出全部署名人，申请人姓名加粗
-- 方式B：仅列申请人，但须注明排序，如：Peng Minyang (the 3rd inventor)
-- 仅列申请人 + 已注明排序 → 不扣分
-- 仅列申请人 + 未注明排序 → 扣1分，核心错误
-- 全部列出 + 申请人加粗 → 不扣分
-- 全部列出 + 申请人未加粗 → 扣1分
-
-证书整体分类顺序规范：
-同类材料必须相邻归组，不得混排：
-- 发表类：专利证书 + 论文发表证明
-- 称号证书类：荣誉称号证书
-- 社会工作类：职务聘书、任职证明
-- 交流交换类：交流项目、交换生证明
-- 同类未归组 → 每处扣1分；顺序本身不作硬性要求
-
-人名拼写规范：
-- 以申请人护照或官方文件为准
-- 吕姓标准拼写为 Lyu（非 Lü，非 Lu）
-- 申请人姓名拼写错误 → 扣1分，核心错误
-- 其他人姓名拼写错误 → 扣1分
-
-翻译准确性规则：
-批改基准是参考答案；若无参考答案，以原始中文材料及留学行业规范为基准。
-核心错误（标注「核心错误」，-1/处）：证书标题、姓名、学校名称、奖项名称及等级、日期、所有数字及编号、专利名称译错或意译
-可以灵活：描述性文字的合理同义表达
-
----
-
-## 2. 翻译完整性
-原文所有必译字段是否全部翻译，每处漏译扣1分，并标注「核心错误」
-注意：证书结语类套话（如"特发此证，以资鼓励""特授予此证"等）不属于必译字段，漏译不扣分
-
----
-
-## 3. 术语规范性
-
-【成绩单翻译】
-术语只要语义准确即可，不要求与参考答案一致。上方"不扣分的情况"中已列出常见术语的可接受范围。只有术语明显错误、产生歧义或与原始材料语义不符时才扣分。
-
-【证书翻译】
-术语须符合留学行业标准用法（学位名称、证书类型、院系名称等）。与参考答案不一致且无合理依据时扣1分。
-
----
-
-## 4. 排版与格式
-对照原始中文材料，评估英文版整体排版：
-- 表格结构是否还原
-- 字段对齐方式是否一致
-- 页面整体视觉和谐度
-- 信息层级是否清晰
-排版出现明显偏差扣1分
-
----
-
-# 扣分规则汇总
-
-- 每个独立语义单元出错 = 扣1分
-- 核心错误：同样扣1分，在报告中标注「核心错误」
-- 标点符号问题：不扣分，在【标点说明】中提示
-- 最低0分，不出现负分
-
----
-
-# 批改流程
-
-Step 1：确认材料齐全（见上方清单），不齐全不批改
-Step 2：提取原文、参考答案、新人译文，建立三列对照
-Step 3：按准确性 → 完整性 → 术语 → 排版顺序逐项检查，标记每处问题
-Step 4：计算总分（100 - 扣分合计）
-Step 5：生成批改报告
-
----
-
-# 输出格式（严格按此结构输出）
-
-**【作业批改报告】**
-
-**作业类型：** [成绩单翻译 / 证书翻译]
-**最终得分：** XX / 100
-
----
-
-**【逐项问题清单】**
-
-| 序号 | 问题位置 | 原文 | 参考答案 | 新人译文 | 问题类型 | 是否核心错误 | 扣分 |
-|------|----------|------|----------|----------|----------|--------------|------|
-| 1 | [用原始材料中的证书名称或字段定位，如《一种汽车EMB系统控制模块》专利证书：发明人] | [中文原文] | [英文参考答案] | [英文新人译文] | 准确性/完整性/术语/排版 | 是/否 | -1 |
-
-**本次扣分合计：** -XX 分
-
----
-
-**【总结评语】**
-（2-3句话，先肯定做得好的部分，再点出主要问题方向，语气鼓励但清晰直接）
-
----
-
-**【主要问题分析】**
-
-**问题一：[问题类型]**
-- 具体表现：
-- 为什么这样处理是错误的：
-- 正确做法：
-
-**问题二：[如有]**
-
----
-
-**【改进建议】**
-
-1. [具体可操作的建议]
-2. [具体可操作的建议]
-3. [如有]
-
----
-
-**【标点说明】**（如有标点问题，此处列出，注明不计入扣分）
-
----
-
-# 重要原则
-
-1. 成绩单翻译以原始材料为唯一批改基准，参考答案不作为扣分依据
-2. 证书翻译以参考答案为批改基准
-3. 成绩单翻译中，合理同义表达一律不扣分，可在改进建议中提示更规范表达
-4. 拼写错误无论是否影响语义，一律扣分并标注「核心错误」
-5. 图片不清晰时，注明「因清晰度不足，以下内容未能核实：[列出]」，不猜测内容
-6. 问题清单中原文列用中文，参考答案列和新人译文列用英文
-7. 问题位置描述须使用原始材料中的证书名称或字段名称，便于新人准确定位，不使用"专利1""专利2"等序号代称
-8. 证书结语类套话（如"特发此证，以资鼓励""特授予此证"等）不属于必译字段，漏译不扣分、不列入问题清单`;
+// ── Batch mode ─────────────────────────────────────────
+async function startBatchGrading(apiKey) {
+  if (trainees.length === 0) return showError('请先添加新人');
+  for (const t of trainees) {
+    if (!t.name) return showError('请为每位新人填写姓名');
+    if (!t.file) return showError('请为【' + t.name + '】上传作业文件');
+  }
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('singleResultArea').style.display = 'none';
+  document.getElementById('batchResultArea').style.display = '';
+  document.getElementById('copyBtn').style.display = 'none';
+  document.getElementById('resultSection').classList.add('visible');
+  document.getElementById('batchSummary').style.display = 'none';
+  document.getElementById('batchResultList').innerHTML = '';
+  document.getElementById('summaryBody').innerHTML = '';
+  const prog = document.getElementById('batchProgress');
+  prog.classList.add('visible');
+  const total = trainees.length;
+  let done = 0;
+  // Pre-load common files once
+  try {
+    setProgressLabel('正在预加载公共材料…', 0, total);
+    await buildCommonContent(msg => setProgressLabel(msg, done, total));
+  } catch (err) {
+    prog.classList.remove('visible');
+    document.getElementById('submitBtn').disabled = false;
+    return showError('读取公共材料失败：' + err.message);
+  }
+  // Grade each trainee sequentially
+  for (let i = 0; i < trainees.length; i++) {
+    const t = trainees[i];
+    t.status = 'running';
+    renderTraineeList();
+    setProgressLabel('正在批改 ' + t.name + '（' + (i + 1) + ' / ' + total + '）', i, total);
+    const card = createBatchCard(t.name, i + 1);
+    document.getElementById('batchResultList').appendChild(card.el);
+    try {
+      const userContent = await buildUserContent(t.file, t.name, msg => setProgressLabel(msg, i, total));
+      setProgressLabel('AI 批改中：' + t.name + '…', i, total);
+      const text = await callGradingAPI(userContent, apiKey);
+      t.report = text;
+      t.score = extractScore(text);
+      t.status = 'done';
+      // Pass userContent so per-card followup has full file context
+      card.setContent(renderMarkdown(text), userContent);
+      // Seed card conversation history with assistant's first reply
+      cardConvState[i + 1].history = [{ role: 'assistant', content: text }];
+      card.setScore(t.score);
+      addSummaryRow(t.name, t.score, '完成');
+    } catch (err) {
+      t.status = 'error';
+      t.report = '批改失败：' + err.message;
+      card.setContent('<p style="color:var(--accent)">' + t.report + '</p>');
+      card.setScore('—');
+      addSummaryRow(t.name, '—', '失败');
+    }
+    renderTraineeList();
+    done++;
+    setProgressLabel('完成 ' + done + ' / ' + total, done, total);
+  }
+  // Show summary
+  addSummaryAvgRow();
+  document.getElementById('batchSummary').style.display = '';
+  document.getElementById('batchSummary').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  prog.classList.remove('visible');
+  document.getElementById('submitBtn').disabled = false;
 }
 
-// ── Render result ──────────────────────────────────────
+function setProgressLabel(msg, done, total) {
+  document.getElementById('progressLabel').textContent = msg;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// Per-card conversation state: cardNum -> {history, userContent}
+const cardConvState = {};
+
+function createBatchCard(name, num) {
+  const el = document.createElement('div');
+  el.className = 'batch-result-card';
+  el.id = 'bcard-' + num;
+  el.innerHTML =
+    '<div class="batch-result-card-header" onclick="toggleBatchCard(' + num + ')">' +
+      '<span class="batch-card-name">👤 ' + name + '</span>' +
+      '<div style="display:flex;align-items:center;gap:12px">' +
+        '<span class="batch-card-score" id="bscore-' + num + '"><span style="font-size:13px;color:var(--muted)">批改中…</span></span>' +
+        '<span class="batch-card-toggle" id="btoggle-' + num + '">▼</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="batch-card-body open" id="bbody-' + num + '">' +
+      '<div style="text-align:center;padding:24px;color:var(--muted)">' +
+        '<div class="loading-spinner" style="margin-bottom:12px"></div>正在批改中…' +
+      '</div>' +
+    '</div>';
+
+  cardConvState[num] = { history: [], userContent: null };
+
+  return {
+    el,
+    setContent(html, userContent) {
+      cardConvState[num].userContent = userContent;
+      document.getElementById('bbody-' + num).innerHTML =
+        '<div class="result-content">' + html + '</div>' +
+        '<div class="card-followup">' +
+          '<div class="card-followup-label">追问 · ' + name + '</div>' +
+          '<div class="card-chat-history" id="cchat-' + num + '"></div>' +
+          '<div class="card-followup-row" style="margin-top:10px">' +
+            '<textarea class="card-followup-input" id="cinput-' + num + '" placeholder="针对此报告继续追问…" rows="1" onkeydown="handleCardFollowupKey(event,' + num + ')"></textarea>' +
+            '<button class="card-followup-btn" id="cbtn-' + num + '" onclick="sendCardFollowup(' + num + ')">发送</button>' +
+          '</div>' +
+        '</div>';
+    },
+    setScore(score) { document.getElementById('bscore-' + num).innerHTML = score + '<span>/ 100</span>'; }
+  };
+}
+
+function handleCardFollowupKey(e, num) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendCardFollowup(num); }
+}
+
+function appendCardBubble(num, role, html) {
+  const hist = document.getElementById('cchat-' + num);
+  if (!hist) return;
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble ' + role;
+  bubble.innerHTML = '<div class="chat-bubble-role">' + (role === 'user' ? '你' : 'AI 导师') + '</div>' + html;
+  hist.appendChild(bubble);
+  bubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function sendCardFollowup(num) {
+  const input = document.getElementById('cinput-' + num);
+  const btn = document.getElementById('cbtn-' + num);
+  if (!input || !btn) return;
+  const question = input.value.trim();
+  if (!question) return;
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  btn.disabled = true;
+
+  const safeQ = question.split('\n').join('<br>');
+  appendCardBubble(num, 'user', '<p>' + safeQ + '</p>');
+
+  const hist = document.getElementById('cchat-' + num);
+  const loadingEl = document.createElement('div');
+  loadingEl.className = 'chat-loading';
+  loadingEl.innerHTML = '<div class="chat-spinner"></div><span>AI 导师思考中…</span>';
+  hist.appendChild(loadingEl);
+  loadingEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  const state = cardConvState[num];
+  state.history.push({ role: 'user', content: question });
+
+  // Build messages: first turn includes full file context
+  const messages = [];
+  if (state.userContent) {
+    messages.push({ role: 'user', content: state.userContent });
+    for (let i = 0; i < state.history.length - 1; i++)
+      messages.push({ role: state.history[i].role, content: state.history[i].content });
+    messages.push({ role: 'user', content: question });
+  }
+
+  try {
+    const reply = await callFollowupAPI(messages, apiKey);
+    loadingEl.remove();
+    state.history.push({ role: 'assistant', content: reply });
+    appendCardBubble(num, 'assistant', renderMarkdown(reply));
+  } catch (err) {
+    loadingEl.remove();
+    appendCardBubble(num, 'assistant', '<p style="color:var(--accent)">发送失败：' + err.message + '</p>');
+  }
+
+  btn.disabled = false;
+}
+
+function toggleBatchCard(num) {
+  const body = document.getElementById('bbody-' + num);
+  const toggle = document.getElementById('btoggle-' + num);
+  const open = body.classList.toggle('open');
+  toggle.textContent = open ? '▼' : '▶';
+}
+
+function addSummaryRow(name, score, status) {
+  const tbody = document.getElementById('summaryBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + name + '</td><td class="score-cell">' + score + (score !== '—' ? ' / 100' : '') + '</td><td>' + status + '</td>';
+  tbody.appendChild(tr);
+}
+
+function addSummaryAvgRow() {
+  const scores = trainees.filter(t => t.score && t.score !== '—').map(t => parseInt(t.score)).filter(s => !isNaN(s));
+  if (scores.length === 0) return;
+  const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+  const tbody = document.getElementById('summaryBody');
+  const tr = document.createElement('tr');
+  tr.className = 'avg-row';
+  tr.innerHTML = '<td>平均分（' + scores.length + ' 人）</td><td class="score-cell">' + avg + ' / 100</td><td>—</td>';
+  tbody.appendChild(tr);
+}
+
+// ── Render ─────────────────────────────────────────────
 function renderMarkdown(text) {
   return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -686,35 +1061,28 @@ function renderMarkdown(text) {
     .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:20px 0">')
     .replace(/^\| (.+) \|$/gm, line => {
       const cells = line.split('|').slice(1, -1).map(c => c.trim());
-      return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
+      return '<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
     })
     .replace(/(<tr>.*<\/tr>\n?)+/gs, rows => {
       const allRows = rows.trim().split('\n');
       const header = allRows[0].replace(/<td>/g, '<th>').replace(/<\/td>/g, '</th>');
       const body = allRows.slice(2).join('\n');
-      return `<table><thead>${header}</thead><tbody>${body}</tbody></table>`;
+      return '<table><thead>' + header + '</thead><tbody>' + body + '</tbody></table>';
     })
     .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>')
     .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
     .replace(/\n{2,}/g, '</p><p>')
     .replace(/\n/g, '<br>');
 }
 
-function extractScore(text) { const m = text.match(/最终得分[：:]\s*(\d+)/); return m ? m[1] : '—'; }
-
-function showResult(text) {
-  hideLoading();
-  document.getElementById('scoreBadge').innerHTML = extractScore(text) + '<span>/ 100</span>';
-  document.getElementById('resultContent').innerHTML = renderMarkdown(text);
-  document.getElementById('resultSection').classList.add('visible');
-  document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+function extractScore(text) {
+  const m = text.match(/最终得分[：:]\s*(\d+)/);
+  return m ? m[1] : '—';
 }
 
-function showLoading() { document.getElementById('submitBtn').disabled = true; document.getElementById('loadingState').classList.add('visible'); document.getElementById('resultSection').classList.remove('visible'); }
-function hideLoading() { document.getElementById('loadingState').classList.remove('visible'); document.getElementById('submitBtn').disabled = false; }
 function setLoadingStep(msg) { document.getElementById('loadingStep').textContent = msg; }
-function showError(msg) { const el = document.getElementById('errorMsg'); el.textContent = msg; el.classList.add('visible'); hideLoading(); }
+function showError(msg) { const el = document.getElementById('errorMsg'); el.textContent = msg; el.classList.add('visible'); }
 function hideError() { document.getElementById('errorMsg').classList.remove('visible'); }
 
 function copyResult() {
@@ -726,14 +1094,75 @@ function copyResult() {
 
 function resetForm() {
   Object.keys(files).forEach(k => files[k] = null);
-  certOriginals = []; renderCertFileList();
-  document.querySelectorAll('.upload-zone').forEach(z => z.classList.remove('has-file'));
-  document.querySelectorAll('.upload-filename').forEach(f => f.textContent = '');
-  document.querySelectorAll('.check-item').forEach(c => c.classList.remove('done'));
+  cachedCommonContent = null;
+  trainees = []; traineeCounter = 0;
+  renderTraineeList();
+  document.querySelectorAll('.upload-zone, .upload-zone-sm').forEach(z => z.classList.remove('has-file'));
+  document.querySelectorAll('.upload-filename, .upload-filename-sm').forEach(f => f.textContent = '');
   document.querySelectorAll('input[type=file]').forEach(i => i.value = '');
   document.getElementById('resultSection').classList.remove('visible');
+  document.getElementById('chatHistory').innerHTML = '';
+  document.getElementById('batchProgress').classList.remove('visible');
+  conversationHistory = []; firstUserContent = null; resultText = '';
   hideError();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Follow-up (single mode only) ──────────────────────
+function handleFollowupKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFollowup(); }
+}
+function appendBubble(role, html) {
+  const history = document.getElementById('chatHistory');
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble ' + role;
+  bubble.innerHTML = '<div class="chat-bubble-role">' + (role === 'user' ? '你' : 'AI 导师') + '</div>' + html;
+  history.appendChild(bubble);
+  bubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  return bubble;
+}
+async function sendFollowup() {
+  const input = document.getElementById('followupInput');
+  const question = input.value.trim();
+  if (!question) return;
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return showError('请先填入 API Key');
+  input.value = ''; input.style.height = 'auto';
+  document.getElementById('followupBtn').disabled = true;
+  const safeQ = question.split('\n').join('<br>');
+  appendBubble('user', '<p>' + safeQ + '</p>');
+  const history = document.getElementById('chatHistory');
+  const loadingEl = document.createElement('div');
+  loadingEl.className = 'chat-loading';
+  loadingEl.innerHTML = '<div class="chat-spinner"></div><span>AI 导师思考中…</span>';
+  history.appendChild(loadingEl);
+  loadingEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  conversationHistory.push({ role: 'user', content: question });
+  const messages = [];
+  if (firstUserContent) {
+    messages.push({ role: 'user', content: firstUserContent });
+    for (let i = 0; i < conversationHistory.length - 1; i++)
+      messages.push({ role: conversationHistory[i].role, content: conversationHistory[i].content });
+    messages.push({ role: 'user', content: question });
+  }
+  try {
+    const reply = await callFollowupAPI(messages, apiKey);
+    loadingEl.remove();
+    conversationHistory.push({ role: 'assistant', content: reply });
+    appendBubble('assistant', renderMarkdown(reply));
+  } catch (err) {
+    loadingEl.remove();
+    appendBubble('assistant', '<p style="color:var(--accent)">发送失败：' + err.message + '</p>');
+  }
+  document.getElementById('followupBtn').disabled = false;
+}
+
+// Initialize: add one trainee by default
+addTrainee();
+
+// ── System Prompt ──────────────────────────────────────
+function buildSystemPrompt() {
+  return "# 角色定位\n你是一位留学行业交付部门的资深导师，专门负责批改新入职员工的翻译作业。批改风格：严谨指出问题，同时具有教学引导性，帮助新人理解错误原因并掌握正确方法。所有输出使用中文。\n\n---\n\n# 两种作业类型\n\n## 类型一：学术材料翻译\n包含4个子模块（毕业证学位证、成绩单、均分与排名证明、在读证明），合并批改，统一计分：\n\n每个模块提交材料共三份：\n1. 原始材料 PDF（批改基准，非批改对象）\n2. 参考答案 PDF（仅供参考，不作为扣分依据，非批改对象）\n3. 新人作业 PDF（★ 这才是批改对象）\n\n输出要求：按模块分组列出问题清单，所有模块失分点汇总后给出一个最终总分（满分100分），不分模块计分，不出汇总得分表\n\n## 类型二：证书实习翻译\n包含材料类型：荣誉科研证书、实习证明\n提交材料共四份：\n1. 原始材料 PDF（含全部证书/实习证明，包括与CV相关和无关的）\n2. 参考答案 PDF\n3. 参考CV PDF（客户英文简历）\n4. 新人作业 PDF\n\nCV筛选说明：批改前须先对照CV，判断原始材料中哪些与CV中的经历相关（须翻译），哪些无关（不须翻译）。新人翻译了无关材料 → 扣分（多余翻译）；新人漏掉了相关材料 → 扣分（漏译）。\n\n---\n\n# 批改前材料确认（每次必做）\n\n学术材料翻译需确认（每个模块）：\n- [ ] 毕业证学位证：原始材料 + 参考答案 + 新人作业\n- [ ] 成绩单：原始材料 + 参考答案 + 新人作业\n- [ ] 均分与排名证明：原始材料 + 参考答案 + 新人作业\n- [ ] 在读证明：原始材料 + 参考答案 + 新人作业\n\n证书实习翻译需确认：\n- [ ] 原始材料 PDF\n- [ ] 参考答案 PDF\n- [ ] 参考CV PDF\n- [ ] 新人作业 PDF\n\n如有缺失，告知新人补充哪项材料，不进行批改。\n\n---\n\n# 批改维度（总分100分）\n\n## 1. 翻译准确性\n\n### 【学术材料翻译专用规则】\n\n**总体原则**\n批改基准为原始中文材料，参考答案仅供参考，不作为扣分依据。只要译文与原文语义准确一致，即使与参考答案表达不同，不扣分。\n\n**不扣分的情况（合理差异）**\n以下情况视为合理的同义表达，不扣分，但可在改进建议中提示参考答案的规范表达：\n- 同义词/近义词替换：语义准确即可，如 Method / Approach、Time / Date、Enrollment / Admission 等\n- 单复数差异：如 Application / Applications、Lecture / Lectures，只要不影响语义\n- 词序调整：如 Practice of Management Secretary / Management Secretary Practice，语义不变\n- 合理增减冠词、介词：不影响核心语义的情况\n- 课程名称的同义表达：只要准确传达原文含义即可\n- 院系、专业、学校名称：语义准确、无拼写错误即可，不强制对齐参考答案\n- 标题类文字：语义准确、无拼写错误即可\n- 术语的合理同义表达（以下均不扣分）：\n  * 必修：R / Required / Compulsory 均可接受\n  * 限选：L / Limited Elective / Restricted Elective 均可接受\n  * 专任或任选：E / Elective / Special Compulsory 均可接受\n\n**扣分的情况（每处独立语义单元出错扣1分）**\n- 信息错译：译文与原文语义不符\n- 信息漏译：原文有内容但译文完全省略，如课程副标题、班级编号、毕业论文题目副标题等\n- 拼写错误：无论是否造成语义改变，一律扣分。特别注意拼写错误导致语义改变的情况，如 Data≠Date、Metal≠Mental、Modem≠Modern\n- 数字错误：学分、分数、GPA、日期、编号等任何数字与原文不符\n- 无中生有增译：原文没有的内容被添加进译文\n\n**「核心错误」标注规则**\n以下情况一律标注「核心错误」（同样扣1分，但在报告中特别标注）：\n- 学生姓名翻译错误\n- 学校名称翻译错误\n- 所有数字错误（学分、分数、GPA、编号等）\n- 任何信息的错译（译文与原文语义不符）\n- 任何信息的漏译（原文内容在译文中完全缺失）\n- 拼写错误（无论是否造成语义改变）\n\n### 【证书实习翻译专用规则】\n\n**批改前第一步：对照CV筛选材料（必做）**\n拿到原始材料后，先逐份对照参考CV中的经历，判断每份材料是否与CV相关：\n- 与CV相关的材料 → 新人必须翻译，漏译扣1分，标注「核心错误」\n- 与CV无关的材料 → 新人不应翻译，若翻译了扣1分（多余翻译）\n在批改报告开头列出筛选结果，注明哪些材料须翻译、哪些无需翻译。\n\n**批改前第二步：判断证书是否为双语版本**\n- 若证书本身已为官方中英双语版本 → 该证书无需另行翻译，新人未提供译文属合理处理，不扣分\n- 若证书为纯中文版本 → 须提供完整英文译文\n\n**须翻译/保留的字段范围（纯中文证书适用）：**\n- 证书标题、姓名、学校名称、奖项名称及等级、颁奖原因/正文描述、指导老师姓名（如有）、颁发机构、日期\n- 证书编号、身份证号、准考证号及其他所有编号类字段（原样保留，无需翻译）\n- 结语类套话（如\"特发此证，以资鼓励\"\"特授予此证\"等）不作为必译字段，漏译不扣分\n\n专利证书须额外体现：\n- 证书号、专利名称（严格对应原文不得意译）、发明人、专利申请号、专利申请日、专利权人、地址、授权公告日、授权公告号（编号类原样保留）\n\n多人署名材料处理规范（专利/论文/竞赛等）：\n- 方式A：列出全部署名人，申请人姓名加粗\n- 方式B：仅列申请人，但须注明排序，如：Peng Minyang (the 3rd inventor)\n- 仅列申请人 + 已注明排序 → 不扣分\n- 仅列申请人 + 未注明排序 → 扣1分，核心错误\n- 全部列出 + 申请人加粗 → 不扣分\n- 全部列出 + 申请人未加粗 → 扣1分\n\n证书整体分类顺序规范：\n同类材料必须相邻归组，不得混排：\n- 发表类：专利证书 + 论文发表证明\n- 称号证书类：荣誉称号证书\n- 社会工作类：职务聘书、任职证明\n- 交流交换类：交流项目、交换生证明\n- 同类未归组 → 每处扣1分；顺序本身不作硬性要求\n\n人名拼写规范：\n- 以申请人护照或官方文件为准\n- 吕姓标准拼写为 Lyu（非 Lü，非 Lu）\n- 申请人姓名拼写错误 → 扣1分，核心错误\n- 其他人姓名拼写错误 → 扣1分\n\n翻译准确性规则：\n批改基准是参考答案；若无参考答案，以原始中文材料及留学行业规范为基准。\n核心错误（标注「核心错误」，-1/处）：证书标题、姓名、学校名称、奖项名称及等级、日期、所有数字及编号、专利名称译错或意译\n可以灵活：描述性文字的合理同义表达\n\n---\n\n## 2. 翻译完整性\n原文所有必译字段是否全部翻译，每处漏译扣1分，并标注「核心错误」\n注意：证书结语类套话（如\"特发此证，以资鼓励\"\"特授予此证\"等）不属于必译字段，漏译不扣分\n\n---\n\n## 3. 术语规范性\n\n【学术材料翻译】\n术语只要语义准确即可，不要求与参考答案一致。只有术语明显错误、产生歧义或与原始材料语义不符时才扣分。\n\n【证书实习翻译】\n术语须符合留学行业标准用法（学位名称、证书类型、院系名称等）。与参考答案不一致且无合理依据时扣1分。\n\n---\n\n## 4. 排版与格式\n对照原始中文材料，评估英文版整体排版：结构、对齐、层级、视觉和谐度。排版出现明显偏差扣1分。\n\n---\n\n# 扣分规则汇总\n\n- 每个独立语义单元出错 = 扣1分\n- 核心错误：同样扣1分，在报告中标注「核心错误」\n- 标点符号问题：不扣分，在【标点说明】中提示\n- 最低0分，不出现负分\n\n---\n\n# 批改流程\n\nStep 1：确认材料齐全\nStep 2：证书实习翻译需先对照CV筛选，列出须翻译/无需翻译的材料清单\nStep 3：提取原文、参考答案、新人译文，建立三列对照\nStep 4：按准确性 → 完整性 → 术语 → 排版顺序逐项检查\nStep 5：计算总分（100 - 扣分合计）\nStep 6：生成批改报告\n\n---\n\n# 输出格式（严格按此结构输出）\n\n## 学术材料翻译输出格式\n\n**【作业批改报告】**\n\n**作业类型：** 学术材料翻译\n**最终得分：** XX / 100\n\n---\n\n**【逐项问题清单】**（按模块分组，不单独计分）\n\n**▌ 毕业证 · 学位证**\n\n| 序号 | 问题位置 | 原文 | 参考答案 | 新人译文 | 问题类型 | 是否核心错误 | 扣分 |\n|------|----------|------|----------|----------|----------|--------------|------|\n| 1 | [字段位置] | [中文原文] | [英文参考答案] | [英文新人译文] | 准确性/完整性/术语/排版 | 是/否 | -1 |\n\n**▌ 成绩单**\n\n| 序号 | 问题位置 | 原文 | 参考答案 | 新人译文 | 问题类型 | 是否核心错误 | 扣分 |\n|------|----------|------|----------|----------|----------|--------------|------|\n| ... | ... | ... | ... | ... | ... | ... | ... |\n\n**▌ 均分与排名证明**\n\n（格式同上）\n\n**▌ 在读证明**\n\n（格式同上）\n\n---\n\n**【全部扣分合计】：** -XX 分\n\n**【最终得分】：** XX / 100（= 100 - 全部扣分合计，最低0分）\n\n---\n\n**【总结评语】**\n（2-3句话，先肯定做得好的部分，再点出主要问题方向，语气鼓励但清晰直接）\n\n**【主要问题分析】**\n\n**问题一：[问题类型]**\n- 具体表现：\n- 为什么错误：\n- 正确做法：\n\n**【改进建议】**\n1. [建议]\n\n**【标点说明】**（如有）\n\n---\n\n## 证书实习翻译输出格式\n\n**【作业批改报告】**\n\n**作业类型：** 证书实习翻译\n**最终得分：** XX / 100\n\n---\n\n**【CV筛选结果】**\n\n须翻译的材料：[列出与CV相关的材料名称]\n无需翻译的材料：[列出与CV无关的材料名称]\n\n---\n\n**【逐项问题清单】**\n\n| 序号 | 问题位置 | 原文 | 参考答案 | 新人译文 | 问题类型 | 是否核心错误 | 扣分 |\n|------|----------|------|----------|----------|----------|--------------|------|\n| 1 | [用原始材料中的证书名称或字段定位] | [中文原文] | [英文参考答案] | [英文新人译文] | 准确性/完整性/术语/排版/多余翻译 | 是/否 | -1 |\n\n**本次扣分合计：** -XX 分\n\n---\n\n**【总结评语】**\n（2-3句话，先肯定做得好的部分，再点出主要问题方向，语气鼓励但清晰直接）\n\n---\n\n**【主要问题分析】**\n\n**问题一：[问题类型]**\n- 具体表现：\n- 为什么这样处理是错误的：\n- 正确做法：\n\n---\n\n**【改进建议】**\n\n1. [具体可操作的建议]\n2. [具体可操作的建议]\n3. [如有]\n\n---\n\n**【标点说明】**（如有标点问题，此处列出，注明不计入扣分）\n\n---\n\n# 重要原则\n\n1. 学术材料翻译以原始材料为唯一批改基准，参考答案不作为扣分依据\n2. 证书实习翻译以参考答案为批改基准\n3. 学术材料翻译中，合理同义表达一律不扣分，可在改进建议中提示更规范表达\n4. 拼写错误无论是否影响语义，一律扣分并标注「核心错误」\n5. 图片不清晰时，注明「因清晰度不足，以下内容未能核实：[列出]」，不猜测内容\n6. 问题清单中原文列用中文，参考答案列和新人译文列用英文\n7. 问题位置描述须使用原始材料中的证书名称或字段名称，不使用\"证书1\"\"证书2\"等序号代称\n8. 证书结语类套话（如\"特发此证，以资鼓励\"\"特授予此证\"等）不属于必译字段，漏译不扣分、不列入问题清单\n9. 翻译了与CV无关的材料视为多余翻译，扣1分，列入问题清单";
 }
 </script>
 </body>
