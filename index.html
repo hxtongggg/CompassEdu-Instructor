@@ -804,7 +804,7 @@ async function startSingleGrading(apiKey) {
     document.getElementById('chatHistory').innerHTML = '';
     document.getElementById('loadingState').classList.remove('visible');
     document.getElementById('scoreBadge').innerHTML = extractScore(text) + '<span>/ 100</span>';
-    document.getElementById('resultContent').innerHTML = renderMarkdown(text);
+    document.getElementById('resultContent').innerHTML = renderMarkdown(normalizeScore(text));
     document.getElementById('resultSection').classList.add('visible');
     document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) {
@@ -858,7 +858,7 @@ async function startBatchGrading(apiKey) {
       t.score = extractScore(text);
       t.status = 'done';
       // Pass userContent so per-card followup has full file context
-      card.setContent(renderMarkdown(text), userContent);
+      card.setContent(renderMarkdown(normalizeScore(text)), userContent);
       // Seed card conversation history with assistant's first reply
       cardConvState[i + 1].history = [{ role: 'assistant', content: text }];
       card.setScore(t.score);
@@ -1087,9 +1087,25 @@ function renderMarkdown(text) {
     .replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>');
 }
 
+function normalizeScore(text) {
+  // 提取最终得分（报告末尾的），用它覆盖开头可能出现的占位分数
+  const matches = [...text.matchAll(/最终得分[：:]\s*(\d+)/g)];
+  if (matches.length <= 1) return text; // 只有一个得分，无需处理
+  const finalScore = matches[matches.length - 1][1];
+  // 把第一处得分替换成最终分数
+  let replaced = false;
+  return text.replace(/最终得分[：:]\s*\d+/, m => {
+    if (!replaced) { replaced = true; return m.replace(/\d+/, finalScore); }
+    return m;
+  });
+}
+
+
 function extractScore(text) {
-  const m = text.match(/最终得分[：:]\s*(\d+)/);
-  return m ? m[1] : '—';
+  // 取最后一个「最终得分」，避免报告开头的占位分数干扰
+  const matches = [...text.matchAll(/最终得分[：:]\s*(\d+)/g)];
+  if (matches.length === 0) return '—';
+  return matches[matches.length - 1][1];
 }
 
 function setLoadingStep(msg) { document.getElementById('loadingStep').textContent = msg; }
